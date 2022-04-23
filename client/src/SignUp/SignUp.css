@@ -1,0 +1,11 @@
+.form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+.login {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 5rem;
+}

@@ -1,0 +1,12 @@
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.links {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+}

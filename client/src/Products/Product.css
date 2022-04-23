@@ -1,0 +1,38 @@
+.productpage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "image description";
+    margin: 10rem auto;
+    max-width: 50%;
+    gap: 3rem;
+    max-height: 200px;
+}
+
+.product-image {
+    grid-area: image;
+    padding: 3rem;
+    background-color: rgba(155, 155, 155, 0.748);
+    border-radius: 10px;
+}
+
+.product-description {
+    grid-area: description;
+    display: grid;
+    grid-template-rows: 70px 50px 1fr 50px 70px 50px;
+    padding: 1rem;
+}
+
+.count {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: auto;
+}
+
+.count button {
+    height: 20px;
+    width: 20px;
+    margin: auto;
+}
