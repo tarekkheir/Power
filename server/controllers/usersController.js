@@ -20,7 +20,7 @@ const usersController = {
         // check email found
         if (Object.keys(user).length) {
           console.log('Email already used');
-          return res.status(409).send({ message: 'Email already used' });
+          return res.send({ message: 'Email already used' });
         }
         else {
           // find user with username
@@ -29,13 +29,13 @@ const usersController = {
               // check username found
               if (Object.keys(user).length) {
                 console.log('Username already exist');
-                return res.status(409).send({ message: 'Username already exist' });
+                return res.send({ message: 'Username already exist' });
               }
               else {
                 // crypt password
                 bcrypt.hash(password, 10, (err, hashPassword) => {
-                  if (err) return res.status(500).send({ message: 'impossible to hash password' });
-                  if (!ROLES.includes(role)) return res.status(500).send({ message: 'wrong role' });
+                  if (err) return res.send({ message: 'impossible to hash password' });
+                  if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
                   // create user
                   User.create({
                     email,
@@ -47,12 +47,12 @@ const usersController = {
                     const { id, username, password, role } = item.dataValues;
                     const payload = { username: username, password: password, role: role, id: id };
                     const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
-                    return res.send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
+                    return res.status(200).send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
                   })
                     .catch((err) => {
                       console.log(err);
                       console.log('error on user creation');
-                      return res.status(500).send({ message: 'impossible to add user' });
+                      return res.send({ message: 'impossible to add user' });
                     });
                 })
               }
@@ -86,7 +86,7 @@ const usersController = {
               const { username, password, role, id } = user[0];
               const payload = { username: username, password: password, role: role, id: id };
               const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
-              return res.send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
+              return res.status(200).send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
             }
             else return res.send({ message: 'wrong password', isLoggedIn: false });
           })

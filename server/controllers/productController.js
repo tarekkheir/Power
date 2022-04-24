@@ -9,14 +9,14 @@ const productController = {
     if (Object.keys(req.body).length > 5) return res.status(501).send({ message: 'too much parameters' });
     const { name, price, type, boss_id, quantity } = req.body;
     if (!name || !price || !type || !boss_id || !quantity) {
-      return res.status(501).send({ 'error': 'missing parameters' });
+      return res.status(501).send({ message: 'missing parameters' });
     }
     console.log(boss_id);
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
         if (!Object.keys(shop).length) {
-          return res.status(501).send({ 'error': 'you have no shop' });
+          return res.status(501).send({ message: 'you have no shop' });
         } else {
           const shop_id = shop.map((s) => {
             const { id } = s.dataValues;
@@ -26,7 +26,7 @@ const productController = {
           Product.findAll({ where: { name: name } })
             .then((product) => {
               if (Object.keys(product).length) {
-                return res.status(501).send({ 'error': 'product name already exist' });
+                return res.status(501).send({ message: 'product name already exist' });
               } else {
                 Product.create({
                   name: name,
@@ -37,27 +37,27 @@ const productController = {
                   quantity: quantity
                 })
                   .then((product) => {
-                    if (product) return res.status(200).send({ 'OK': 'Product added successfully !' });
-                    else return res.status(501).send({ 'error': 'fail to add product' });
+                    if (product) return res.status(200).send({ message: 'Product added successfully !' });
+                    else return res.status(501).send({ message: 'fail to add product' });
                   })
                   .catch((err) => {
                     console.log('error on product creation');
                     console.log(err);
-                    return res.status(501).send({ 'error': 'error on product creation' });
+                    return res.status(501).send({ message: 'error on product creation' });
                   })
               }
             })
             .catch((err) => {
               console.log('error on finding Product');
               console.log(err);
-              return res.status(501).send({ 'error': 'error on finding product' });
+              return res.status(501).send({ message: 'error on finding product' });
             })
         }
       })
       .catch((err) => {
         console.log('error on finding shop for adding product');
         console.log(err);
-        return res.status(501).send({ 'error': 'error on finding shop for adding product' });
+        return res.status(501).send({ message: 'error on finding shop for adding product' });
       })
 
   },
@@ -66,7 +66,7 @@ const productController = {
     if (Object.keys(req.body).length > 3) return res.status(501).send({ message: 'too much parameters' });
     const { boss_id, name, product_id } = req.body;
     if (!boss_id || !name || !product_id) {
-      return res.status(501).send({ 'error': 'missing parameters' });
+      return res.status(501).send({ message: 'missing parameters' });
     }
 
     Product.destroy({ where: { [Op.and]: [{ boss_id: boss_id }, { name: name }] } })
@@ -76,13 +76,13 @@ const productController = {
           return res.status(200).send({ 'Product deleted': product_id });
         } else {
           console.log('no product to delete');
-          return res.status(501).send({ 'error': 'no product to delete' });
+          return res.status(501).send({ message: 'no product to delete' });
         }
       })
       .catch((err) => {
         console.log('error on product delete');
         console.log((err));
-        return res.status(501).send({ 'error': 'error on product delete' })
+        return res.status(501).send({ message: 'error on product delete' })
       })
 
   },
@@ -91,7 +91,7 @@ const productController = {
     if (Object.keys(req.body).length > 5) return res.send({ message: 'too much parameters' });
     const { name, boss_id, quantity, price, product_id } = req.body;
     if (!name || !boss_id || !quantity || !price || !product_id) {
-      return res.status(501).send({ 'error': 'missing parameters' });
+      return res.status(501).send({ message: 'missing parameters' });
     }
 
     Product.update({ quantity: quantity, price: price, name: name }, { where: { [Op.and]: [{ id: product_id }, { boss_id: boss_id }] } })
@@ -99,16 +99,16 @@ const productController = {
         console.log(product);
         if (product != 0) {
           console.log('Product quantity updated');
-          return res.status(200).send({ 'OK': 'Product quantity updated' });
+          return res.status(200).send({ message: 'Product quantity updated' });
         } else {
           console.log('no update done');
-          return res.status(501).send({ 'error': 'no update done' });
+          return res.status(501).send({ message: 'no update done' });
         }
       })
       .catch((err) => {
         console.log('error on product quantity update');
         console.log(err);
-        return res.status(501).send({ 'error': 'error on product quantity update' })
+        return res.status(501).send({ message: 'error on product quantity update' })
       })
   },
 
@@ -116,12 +116,12 @@ const productController = {
     if (Object.keys(req.body).length > 1) return res.send({ message: 'too much parameters' });
     const { name } = req.body;
     if (!name) {
-      return res.status(501).send({ 'error': 'missing parameters' });
+      return res.status(501).send({ message: 'missing parameters' });
     }
 
     Shop.findAll({ where: { name: name } })
       .then((shop) => {
-        if (!Object.keys(shop).length) return res.status(501).send({ 'error': 'no shop found for this name' });
+        if (!Object.keys(shop).length) return res.status(501).send({ message: 'no shop found for this name' });
         else {
           const shop_id = shop.map((s) => {
             const { id } = s.dataValues;
@@ -130,7 +130,7 @@ const productController = {
 
           Product.findAll({ where: { shop_id: shop_id } })
             .then((product) => {
-              if (!product) return res.status(501).send({ 'Sorry': 'no product found for this shop' });
+              if (!product) return res.status(501).send({ message: 'no product found for this shop' });
               else {
                 const products = [];
 
@@ -146,7 +146,7 @@ const productController = {
       .catch((err) => {
         console.log('error on finding shop name');
         console.log((err));
-        return res.status(501).send({ 'error': 'error on finding shop name' });
+        return res.status(501).send({ message: 'error on finding shop name' });
       })
   }
 }

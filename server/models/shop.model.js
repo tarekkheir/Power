@@ -11,7 +11,7 @@ const Shop = db.sequelize.define('shop', {
     allowNull: false
   },
   boss_id: {
-    type: Sequelize.DataTypes.STRING,
+    type: Sequelize.DataTypes.INTEGER.UNSIGNED,
     allowNull: false
   },
   open_hours: {

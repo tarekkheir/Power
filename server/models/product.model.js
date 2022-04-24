@@ -15,7 +15,7 @@ const Product = db.sequelize.define('product', {
     allowNull: false
   },
   boss_id: {
-    type: Sequelize.DataTypes.STRING,
+    type: Sequelize.DataTypes.INTEGER.UNSIGNED,
     allowNull: false
   },
   quantity: {

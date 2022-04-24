@@ -16,6 +16,7 @@ router.post('/delete_shop', authModerator, shopController.delete_shop);
 router.post('/update_shop_details', authModerator, shopController.update_shop_details);
 router.get('/shops', shopController.get_all_shop_details);
 router.get('/shop/:id', shopController.get_shop_by_id);
+router.get('/myshop/:id', shopController.get_shop_details);
 // Products routes
 router.post('/add_product', authModerator, productController.add_product);
 router.post('/delete_product', authModerator, productController.delete_product);

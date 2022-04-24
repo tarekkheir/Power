@@ -21,6 +21,7 @@ const authUser = (req, res, next) => {
 }
 
 const authModerator = (req, res, next) => {
+  console.log(req.headers['authorization']);
   const authHeaders = req.headers['authorization'];
   const token = authHeaders && authHeaders.split(' ')[1];
 
