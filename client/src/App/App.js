@@ -10,6 +10,7 @@ import SignUp from '../SignUp/SignUp';
 import Shop from '../Shops/Shop';
 import Product from '../Products/Product';
 import Profil from '../Profil/Profil';
+import AddShop from '../Shops/AddShop';
 
 
 class App extends React.Component {
@@ -19,7 +20,8 @@ class App extends React.Component {
       user: {
         username: '',
         role: '',
-        password: ''
+        password: '',
+        user_id: 0
       },
       isLoggedIn: false
     }
@@ -30,13 +32,21 @@ class App extends React.Component {
   }
 
   login = () => { this.setState({ isLoggedIn: true }) };
-  logout = () => { this.setState({ isLoggedIn: false }) };
-  setUser = (username, password, role) => {
+  logout = () => {
+    this.setState({ isLoggedIn: false })
+    sessionStorage.removeItem('accessToken')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('user_id');
+  };
+
+  setUser = (username, password, role, user_id) => {
     this.setState({
       user: {
         username: username,
         role: role,
-        password: password
+        password: password,
+        user_id: user_id
       }
     })
   };
@@ -55,6 +65,7 @@ class App extends React.Component {
                 <Route path='/shop/:id' element={<Shop />} />
                 <Route path='/shop/:id/product/:id' element={<Product />} />
                 <Route path='/profil' element={<Profil />} />
+                <Route path='/add_shop' element={<AddShop />} />
               </Route>
               <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login />} />
               <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp />} />

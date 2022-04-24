@@ -1,0 +1,42 @@
+center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profil {
+    max-width: 80%;
+    margin: 5rem auto;
+    border: 1px solid black;
+}
+
+.profil-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.profil-list {
+    list-style: none;
+    border: 1px solid blue;
+    display: grid;
+    padding: 0;
+    gap: 1rem;
+}
+
+.profil-item {
+    display: grid;
+    gap: 1rem;
+    width: 300px;
+}
+
+.profil-shopbox {
+    margin: auto;
+}
+
+.add-shop-button {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    cursor: pointer;
+}

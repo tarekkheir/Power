@@ -9,15 +9,16 @@ const ProductList = ({ shop_id }) => {
   useEffect(() => {
     axios.get(`http://localhost:8080/shop/${shop_id}`)
       .then((res) => {
-        if (res.data) {
+        console.log(res.data);
+        if (!res.data.message) {
           const datas = [];
           res.data.map((product, index) => {
             const { name, type, price, quantity, id } = product;
             datas.push({ name: name, price: price, quantity: quantity, type: type, id: id });
             return 1;
-          })
+          });
           setProducts(datas);
-        }
+        } else alert(res.data.message);
         console.log('done');
       })
       .catch((err) => {

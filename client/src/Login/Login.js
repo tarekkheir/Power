@@ -28,12 +28,12 @@ class Login extends React.Component {
           if (!isLoggedIn) alert(res.data.message);
           else {
             const { accessToken, username, role, user_id } = res.data;
-            sessionStorage.setItem('accessToken', accessToken)
+            sessionStorage.setItem('accessToken', `Bearer ${accessToken}`)
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('role', role);
             sessionStorage.setItem('user_id', user_id);
             this.context.login();
-            this.context.setUser(username, this.state.password, role);
+            this.context.setUser(username, this.state.password, role, user_id);
           }
         })
         .catch((err) => {
