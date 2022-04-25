@@ -32,8 +32,8 @@ class Login extends React.Component {
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('role', role);
             sessionStorage.setItem('user_id', user_id);
-            this.context.login();
-            this.context.setUser(username, this.state.password, role, user_id);
+            sessionStorage.setItem('isLoggedIn', isLoggedIn);
+            this.props.logIn(username, role, user_id);
           }
         })
         .catch((err) => {
@@ -57,7 +57,7 @@ class Login extends React.Component {
   handleChangePassword(event) {
     event.preventDefault();
 
-    if (event.target.value !== '' && this.state.email !== '') {
+    if (event.target.value !== '' && this.state.us !== '') {
       this.setState({ enableSubmit: true });
     } else this.setState({ enableSubmit: false });
 

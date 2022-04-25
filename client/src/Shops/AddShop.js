@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AddShop.css';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AddShop = () => {
   const [name, setName] = useState('');
@@ -11,6 +11,7 @@ const AddShop = () => {
   const [closeHour, setCloseHour] = useState('');
   const [enableSubmit, setEnableSubmit] = useState(true);
   const loc = useLocation();
+  const navigate = useNavigate();
   const { boss_id } = loc.state;
 
 
@@ -24,6 +25,7 @@ const AddShop = () => {
         console.log(res);
         const { message } = res.data;
         alert(message);
+        navigate('/profil');
       })
       .catch((err) => {
         console.log('error on axios add shop post', err);

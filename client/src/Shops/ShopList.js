@@ -7,25 +7,21 @@ const ShopList = () => {
   const [shops, setShops] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/shops')
-      .then((res) => {
+    async function fetchData() {
+      try {
+        const res = await axios.get('http://localhost:8080/shops');
         if (!res.data.message) {
-          let datas = [];
-          res.data.map((shop) => {
-            console.log(shop);
-            const { name, location, open_hours, type, id, boss_id } = shop;
-            datas.push({ name: name, location: location, open_hours: open_hours, type: type, id: id, boss_id: boss_id });
-            return 1;
-          })
-          setShops(datas);
+          setShops(res.data);
         } else alert(res.data.message);
-        console.log('done');
-      })
-      .catch((err) => {
+        console.log('axios done');
+      } catch (err) {
         console.log('axios error', err);
-      })
+      }
+    }
+    fetchData();
   }, []);
 
+  console.log('shops: ', shops);
 
   return (
     <div className='shops-list'>

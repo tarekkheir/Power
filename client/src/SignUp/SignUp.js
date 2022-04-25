@@ -35,7 +35,7 @@ class SingUp extends React.Component {
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('role', role);
             sessionStorage.setItem('user_id', user_id);
-            this.context.login();
+            this.props.logIn(username, role, user_id);
           }
         })
         .catch((err) => {

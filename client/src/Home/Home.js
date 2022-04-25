@@ -5,13 +5,15 @@ import './Home.css';
 
 const Home = () => {
   const context = useContext(AppContext);
-  const { user: { username } } = context;
+  const { username } = context;
 
   return (
-    <div className='home'>
-      <h1>Welcome {username} !</h1>
-      <ShopList />
-    </div>
+    <React.Fragment>
+      <div className='home'>
+        <h1>Welcome {username} !</h1>
+        <ShopList />
+      </div>
+    </React.Fragment>
   );
 };
 

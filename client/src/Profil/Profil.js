@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Profil = () => {
   const context = useContext(AppContext);
   const navigate = useNavigate();
-  const { user: { username, user_id, role } } = context;
+  const { username, user_id, role } = context;
   const [new_name, setNew_name] = useState('');
   const [shop, setShop] = useState([]);
 
@@ -17,8 +17,8 @@ const Profil = () => {
       axios.get(`http://localhost:8080/myshop/${user_id}`)
         .then((res) => {
           if (res.data) {
-            const { name, location, type, open_hours } = res.data;
-            setShop({ name: name, location: location, open_hours: open_hours, type: type });
+            const { name, location, type, open_hours, boss_id } = res.data;
+            setShop({ name: name, location: location, open_hours: open_hours, type: type, boss_id: boss_id });
           }
           console.log('axios called');
         })
@@ -28,6 +28,10 @@ const Profil = () => {
     }
     console.log('you are a user');
   }, [user_id, role, setShop])
+
+  console.log('shop: ', shop);
+  console.log('shop length: ', Object.keys(shop).length > 0);
+  console.log('role: ', role);
 
 
   const handleChangeUsername = (event) => {
@@ -66,16 +70,17 @@ const Profil = () => {
           </ul>
         </div>
 
-        {shop.lenght > 0 && role === 'moderator' ? (<div className='profil-shop'>
+        {role === 'moderator' && Object.keys(shop).length > 0 ? (<div className='profil-shop'>
           <h3>My Shop</h3>
           <div className='shop-details'>
-            <ShopBox name={shop.name} location={shop.location} open_hours={shop.open_hours} type={shop.type} />
+            <ShopBox name={shop.name} location={shop.location} open_hours={shop.open_hours} type={shop.type} boss_id={user_id} />
           </div>
-        </div>) : role === 'user' ? (<h3>History</h3>) : (
-          <div>
-            <h3>My Shop</h3>
-            <button className='add-shop-button' onClick={() => navigate('/add_shop', { state: { boss_id: user_id } })}>+</button>
-          </div>)}
+        </div>) : role === 'moderator' ? (<button className='add-shop-button' onClick={() => navigate('/add_shop', { state: { boss_id: user_id } })}>+</button>)
+          : role === 'admin' ? (
+            <div>
+              <h3>Welcome Big Boss</h3>
+              <button className='add-shop-button' onClick={() => navigate('/add_shop', { state: { boss_id: user_id } })}>+</button>
+            </div>) : (<h3>History</h3>)}
       </div>
     </div>
   );

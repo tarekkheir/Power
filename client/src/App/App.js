@@ -5,7 +5,7 @@ import Login from '../Login/Login';
 import Home from '../Home/Home';
 import React from 'react';
 import ProtectedRoute from '../Routes/ProtectedRoute';
-import AppContext from './AppContext';
+import AppContext, { user } from './AppContext';
 import SignUp from '../SignUp/SignUp';
 import Shop from '../Shops/Shop';
 import Product from '../Products/Product';
@@ -17,58 +17,64 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        username: '',
-        role: '',
-        password: '',
-        user_id: 0
-      },
-      isLoggedIn: false
+      user
     }
 
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.setUser = this.setUser.bind(this);
+    this.logIn = this.logIn.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
-  login = () => { this.setState({ isLoggedIn: true }) };
-  logout = () => {
-    this.setState({ isLoggedIn: false })
-    sessionStorage.removeItem('accessToken')
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('role');
-    sessionStorage.removeItem('user_id');
-  };
+  componentDidMount() {
+    const username = sessionStorage.getItem('username');
+    const role = sessionStorage.getItem('role');
+    const user_id = sessionStorage.getItem('user_id');
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
-  setUser = (username, password, role, user_id) => {
     this.setState({
       user: {
         username: username,
         role: role,
-        password: password,
+        user_id: user_id,
+        isLoggedIn: isLoggedIn
+      }
+    })
+  }
+
+  logOut = () => {
+    this.setState({ user })
+    sessionStorage.clear();
+  };
+
+  logIn = (username, role, user_id) => {
+    this.setState({
+      user: {
+        isLoggedIn: true,
+        username: username,
+        role: role,
         user_id: user_id
       }
     })
-  };
+  }
 
 
   render() {
-    const { isLoggedIn, user } = this.state;
+    console.log('App rendering');
+    const { user: { isLoggedIn } } = this.state;
     return (
-      <AppContext.Provider value={{ login: this.login, logout: this.logout, user: user, isLoggedIn: isLoggedIn, setUser: this.setUser }}>
+      <AppContext.Provider value={this.state.user}>
         <div className="App">
           <BrowserRouter>
-            <NavBar />
+            <NavBar logOut={this.logOut} />
             <Routes>
-              <Route element={<ProtectedRoute isLoggedIn={this.state.isLoggedIn} />}>
+              <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
                 <Route path='/' element={<Home />} />
                 <Route path='/shop/:id' element={<Shop />} />
                 <Route path='/shop/:id/product/:id' element={<Product />} />
                 <Route path='/profil' element={<Profil />} />
                 <Route path='/add_shop' element={<AddShop />} />
               </Route>
-              <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login />} />
-              <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp />} />
+              <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login logIn={this.logIn} />} />
+              <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={this.logIn} />} />
             </Routes>
           </BrowserRouter>
         </div >
