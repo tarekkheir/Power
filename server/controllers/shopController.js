@@ -10,25 +10,25 @@ const shopController = {
     const { name, boss_id, location, type, open_hours } = req.body;
     console.log(req.body);
     if (!name || !boss_id || !location || !type || !open_hours) {
-      return res.status(501).send({ message: 'missing parameters' });
+      return res.status(200).send({ message: 'missing parameters' });
     }
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
-        if (Object.keys(shop).length) {
+        if (Object.keys(shop).length && boss_id !== 1) {
           console.log('Boss id already used !');
-          return res.status(501).send({ message: 'You have already one shop registered !' });
+          return res.status(200).send({ message: 'You have already one shop registered !' });
         } else {
           Shop.findAll({ where: { name: name } })
             .then((shop) => {
-              if (Object.keys(shop).length) {
+              if (Object.keys(shop).length && boss_id !== 1) {
                 console.log('Name already used !');
-                return res.status(501).send({ message: 'Name already used !' });
+                return res.status(200).send({ message: 'Name already used !' });
               } else {
                 Shop.findAll({ where: { location: location } })
                   .then((shop) => {
-                    if (Object.keys(shop).length) {
-                      return res.status(501).send({ message: 'location already used !' });
+                    if (Object.keys(shop).length && boss_id !== 1) {
+                      return res.status(200).send({ message: 'location already used !' });
                     } else {
                       Shop.create({
                         name: name,
