@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../App/AppContext';
 import './Profil.css';
 import axios from 'axios';
-import ShopBox from '../Shops/ShopBox';
 import { useNavigate } from 'react-router-dom';
+import profil from '../images/profil.png';
+import shop_icon from '../images/shop.png';
+import historical from '../images/historical.png';
+import user from '../images/user.png';
+import cart from '../images/cart.png';
 
 const Profil = () => {
   const context = useContext(AppContext);
   const navigate = useNavigate();
   const { username, user_id, role } = context;
-  const [new_name, setNew_name] = useState('');
   const [shop, setShop] = useState([]);
 
   useEffect(() => {
@@ -33,54 +36,37 @@ const Profil = () => {
   console.log('shop length: ', Object.keys(shop).length > 0);
   console.log('role: ', role);
 
-
-  const handleChangeUsername = (event) => {
-    event.preventDefault();
-    setNew_name({ new_name: event.target.value });
-  }
-
-  const changeUsername = (event) => {
-    event.preventDefault();
-
-    if (new_name !== username) {
-      console.log('new username: ', new_name);
-    } else console.log('Username don\'t change');
-  }
-
   return (
     <div className='profil'>
-      <h1>{username} profil !</h1>
-      <div className='profil-container'>
-        <div className='profil-details'>
-          <h3>Details</h3>
-          <ul className='profil-list center' onSubmit={(event) => changeUsername(event)}>
-            <li className='profil-item'>
-              <label>Username</label>
-              <input value={new_name} type='text' onChange={(event) => handleChangeUsername(event)} />
+      <div className='profil-name'>
+        <img src={profil} height='70' width='70' alt='profil' />
+        <h1>{username}</h1>
+      </div>
+      <div className='list-container'>
+        <ul className='profil-list'>
+          <li className='list-item'>
+            <img src={user} height='50' width='50' alt='user' />
+            <h2>Profil</h2>
+            <p>Modify your profil details</p>
+          </li>
+          <li className='list-item'>
+            <img src={historical} height='50' width='50' alt='historic' />
+            <h2>Historical</h2>
+            <p>Follow my current and past transaction</p>
+          </li>
+          {role === 'moderator' || role === 'admin' ?
+            <li className='list-item'>
+              <img src={shop_icon} height='50' width='50' alt='shop' />
+              <h2>Shop</h2>
+              <p>Manage your shop details and products</p>
+            </li> :
+            <li className='list-item'>
+              <img src={cart} height='50' width='50' alt='cart' />
+              <h2>My Cart</h2>
+              <p>Manage your cart and transaction</p>
             </li>
-            <li className='profil-item'>
-              <label>Password</label>
-              <input value={new_name} type='text' onChange={(event) => handleChangeUsername(event)} />
-            </li>
-            <li className='profil-item'>
-              <label>Email</label>
-              <input value={new_name} type='text' onChange={(event) => handleChangeUsername(event)} />
-            </li>
-            <li className='profil-item'><button type='submit'>Submit changes</button></li>
-          </ul>
-        </div>
-
-        {role === 'moderator' && Object.keys(shop).length > 0 ? (<div className='profil-shop'>
-          <h3>My Shop</h3>
-          <div className='shop-details'>
-            <ShopBox name={shop.name} location={shop.location} open_hours={shop.open_hours} type={shop.type} boss_id={user_id} />
-          </div>
-        </div>) : role === 'moderator' ? (<button className='add-shop-button' onClick={() => navigate('/add_shop', { state: { boss_id: user_id } })}>+</button>)
-          : role === 'admin' ? (
-            <div>
-              <h3>Welcome Big Boss</h3>
-              <button className='add-shop-button' onClick={() => navigate('/add_shop', { state: { boss_id: user_id } })}>+</button>
-            </div>) : (<h3>History</h3>)}
+          }
+        </ul>
       </div>
     </div>
   );

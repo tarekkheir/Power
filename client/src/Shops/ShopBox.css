@@ -1,10 +1,40 @@
 .shopbox {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     background-color: aliceblue;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.238);
     max-height: 250px;
-    max-width: 350px;
+    min-width: 350px;
     cursor: pointer;
+    margin: auto;
+}
+
+.image {
+    width: 100%;
+    background-color: rgba(255, 212, 127, 0.493);
+    height: 150px;
+}
+
+.details {
+    display: grid;
+    padding: 1rem;
+}
+
+.details .name {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.shop-infos {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+}
+
+.details h4,
+ul,
+p {
+    margin: 0;
 }
