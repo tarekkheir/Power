@@ -10,6 +10,7 @@ const router = express.Router();
 // Users routes
 router.post('/signup', usersController.signUp);
 router.post('/login', usersController.login);
+router.post('/update_user_details', authUser, usersController.update_user_details);
 // Shop routes
 router.post('/add_shop', authModerator, shopController.add_shop);
 router.post('/delete_shop', authModerator, shopController.delete_shop);

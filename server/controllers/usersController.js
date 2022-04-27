@@ -13,6 +13,7 @@ const usersController = {
     if (!email || !password || !username || !role) {
       return res.send({ message: 'missing parameters' });
     }
+    if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
 
     // find user with email
     User.findAll({ where: { email: email } })
@@ -35,7 +36,6 @@ const usersController = {
                 // crypt password
                 bcrypt.hash(password, 10, (err, hashPassword) => {
                   if (err) return res.send({ message: 'impossible to hash password' });
-                  if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
                   // create user
                   User.create({
                     email,
@@ -91,6 +91,40 @@ const usersController = {
             else return res.send({ message: 'wrong password', isLoggedIn: false });
           })
         } else return res.send({ message: 'user not found', isLoggedIn: false });
+      })
+      .catch((err) => {
+        console.log('error on find user');
+        console.log(err);
+        return res.send.status(501).send({ 'error': 'error on finding user', isLoggedIn: false });
+      })
+  },
+
+  update_user_details: (req, res) => {
+    if (Object.keys(req.body).length > 3) return res.status(500).send({ message: 'too much parameters', isLoggedIn: false });
+    const { username, role, id } = req.body;
+    console.log(req.body);
+    if (!username || !role || !id) return res.status(500).send({ message: 'missing parameters', isLoggedIn: false });
+    if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
+
+    // find user with username
+    User.findAll({ where: { id: id } })
+      .then((user) => {
+        // check user found 
+        if (Object.keys(user).length) {
+          User.update({ username, role }, { where: { id: id } })
+            .then((new_user) => {
+              if (new_user) {
+                // create token
+                const payload = { username: username, role: role, id: id };
+                const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
+                return res.status(200).send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
+              } else return res.send({ message: 'no modifications done', isLoggedIn: false });
+            })
+            .catch((err) => {
+              console.log('error on user update: ', err);
+              return res.send({ message: 'error on user update' });
+            })
+        }
       })
       .catch((err) => {
         console.log('error on find user');

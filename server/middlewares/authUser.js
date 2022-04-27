@@ -13,6 +13,7 @@ const authUser = (req, res, next) => {
     if (err) return res.send({ 'error': 'wrong token', isLoggedIn: false });
     const role = user.role;
     if (role === 'user' || role === 'moderator' || role === 'admin') {
+      req.body.id = user.id;
       next();
     } else {
       return res.send({ 'Forbidden': 'You don\'t have access on this page !' });
@@ -58,26 +59,5 @@ const authAdmin = (req, res, next) => {
     }
   });
 }
-
-// const isLoggedIn = (req, res, next) => {
-//   const authHeaders = req.headers['authorization'];
-//   const token = authHeaders && authHeaders.split(' ')[1];
-
-//   if (!token) next();
-//   else {
-//     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-//       if (err) next();
-//       console.log(user);
-//       const role = user.role;
-//       if (role === 'user' || role === 'moderator' || role === 'admin') {
-//         req.body = user;
-//         res.redirect('/home');
-//       } else {
-//         return res.send({ 'Forbidden': 'You don\'t have access on this page !' });
-//       }
-//     });
-//   }
-
-// }
 
 module.exports = { authUser, authModerator, authAdmin };
