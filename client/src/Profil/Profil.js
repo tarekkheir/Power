@@ -44,23 +44,23 @@ const Profil = () => {
       </div>
       <div className='list-container'>
         <ul className='profil-list'>
-          <li className='list-item'>
+          <li className='list-item' onClick={() => navigate('/profil_details', { state: { username: username, role: role } })}>
             <img src={user} height='50' width='50' alt='user' />
             <h2>Profil</h2>
             <p>Modify your profil details</p>
           </li>
-          <li className='list-item'>
+          <li className='list-item' onClick={() => navigate('/')}>
             <img src={historical} height='50' width='50' alt='historic' />
             <h2>Historical</h2>
             <p>Follow my current and past transaction</p>
           </li>
           {role === 'moderator' || role === 'admin' ?
-            <li className='list-item'>
+            <li className='list-item' onClick={() => navigate('/')}>
               <img src={shop_icon} height='50' width='50' alt='shop' />
               <h2>Shop</h2>
               <p>Manage your shop details and products</p>
             </li> :
-            <li className='list-item'>
+            <li className='list-item' onClick={() => navigate('/')}>
               <img src={cart} height='50' width='50' alt='cart' />
               <h2>My Cart</h2>
               <p>Manage your cart and transaction</p>

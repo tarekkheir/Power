@@ -11,6 +11,7 @@ import Shop from '../Shops/Shop';
 import Product from '../Products/Product';
 import Profil from '../Profil/Profil';
 import AddShop from '../Shops/AddShop';
+import ProfilDetails from '../Profil/ProfilDetails';
 
 
 class App extends React.Component {
@@ -71,6 +72,7 @@ class App extends React.Component {
                 <Route path='/shop/:id' element={<Shop />} />
                 <Route path='/shop/:id/product/:id' element={<Product />} />
                 <Route path='/profil' element={<Profil />} />
+                <Route path='/profil_details' element={<ProfilDetails />} />
                 <Route path='/add_shop' element={<AddShop />} />
               </Route>
               <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login logIn={this.logIn} />} />
