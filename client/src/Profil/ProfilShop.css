@@ -1,22 +1,38 @@
-.profil-details {
-    max-width: 70%;
+.profil-shop {
+    max-width: 80%;
     margin: 5rem auto;
 }
 
-.profil-details-list {
+.profil-shop-container {
     margin: 5rem auto;
+    display: grid;
+}
+
+.myshop {
+    margin-top: 2rem;
+    padding: 0 1rem;
+    width: 50%;
+}
+
+.myshop h2 {
+    text-align: center;
+}
+
+.myshop-list {
+    display: grid;
+    padding: 3rem;
+    margin: 1rem auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "1 2"
+        "3 4"
         "submit submit";
     gap: 2rem;
-    padding: 2rem;
     box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.119);
-    max-width: 65%;
 }
 
-.profil-details-list-item {
+.myshop-list-item {
     display: grid;
     gap: 1rem;
     padding: 1rem;
@@ -24,7 +40,18 @@
     cursor: pointer;
 }
 
-.profil-details-list-item input {
+.myshop-openhours {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.myshop-openhours input {
+    max-width: 80px;
+    text-align: right;
+}
+
+.myshop-list-item input {
     border: 1px solid rgba(0, 0, 0, 0.16);
     height: 20px;
     padding: 0.5rem 1rem;
@@ -32,16 +59,16 @@
     border-radius: 10px;
 }
 
-.profil-details-list-item label {
+.myshop-list-item label {
     font-size: 20px;
 }
 
-.profil-details-list-item select {
+.myshop-list-item select {
     font-size: 18px;
     text-align: center;
 }
 
-#submit-user-details {
+#submit-shop-details {
     grid-area: submit;
     min-width: 200px;
     height: 40px;
@@ -50,7 +77,7 @@
     border-radius: 10px;
 }
 
-#submit-user-details:enabled {
+#submit-shop-details:enabled {
     background-color: #2ea44f;
     color: white;
     cursor: pointer;

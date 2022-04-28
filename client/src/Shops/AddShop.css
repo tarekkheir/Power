@@ -1,9 +1,13 @@
+.addshop {
+    text-align: center;
+    margin: 5rem auto;
+}
+
 .addshop-details {
     display: grid;
     max-width: 20%;
     margin: 5rem auto;
     gap: 0.5rem;
-    text-align: center;
 }
 
 .openhours {

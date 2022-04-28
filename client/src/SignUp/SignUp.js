@@ -31,7 +31,7 @@ class SingUp extends React.Component {
           if (!isLoggedIn) alert(res.data.message);
           else {
             const { accessToken, username, role, user_id } = res.data;
-            sessionStorage.setItem('accessToken', accessToken)
+            sessionStorage.setItem('accessToken', 'Bearer ' + accessToken)
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('role', role);
             sessionStorage.setItem('user_id', user_id);

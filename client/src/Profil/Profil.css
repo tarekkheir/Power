@@ -15,9 +15,10 @@ center {
     display: grid;
     grid-template-columns: 70px 1fr;
     max-height: 70px;
-    max-width: 300px;
+    max-width: 350px;
     margin: auto;
     padding: 1rem;
+    text-align: center;
 }
 
 .list-container {

@@ -15,8 +15,8 @@ const ShopBox = ({ ...props }) => {
           <span>&#11088;&#11088;&#11088;&#11088;&#11088;</span>
         </div>
         <ul className='shop-infos'>
-          <li>{location}</li>
           <li>{type}</li>
+          <li>{location}</li>
         </ul>
       </div>
     </div>

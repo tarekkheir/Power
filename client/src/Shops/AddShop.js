@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './AddShop.css';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import AppContext from '../App/AppContext';
 
 const AddShop = () => {
   const [name, setName] = useState('');
@@ -10,9 +11,9 @@ const AddShop = () => {
   const [openHour, setOpenHour] = useState('');
   const [closeHour, setCloseHour] = useState('');
   const [enableSubmit, setEnableSubmit] = useState(true);
-  const loc = useLocation();
   const navigate = useNavigate();
-  const { boss_id } = loc.state;
+  const context = useContext(AppContext);
+  const boss_id = context.id;
 
 
   const postShop = (e) => {

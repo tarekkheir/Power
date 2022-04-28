@@ -2,7 +2,6 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
-    background-color: aliceblue;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.238);
     max-height: 250px;
     min-width: 350px;
@@ -24,6 +23,7 @@
 .details .name {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    text-align: center;
 }
 
 .shop-infos {
@@ -31,6 +31,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0;
+    text-align: center;
 }
 
 .details h4,

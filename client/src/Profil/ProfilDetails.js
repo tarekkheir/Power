@@ -17,7 +17,8 @@ const ProfilDetails = () => {
     const headers = { 'authorization': accessToken };
     axios.post('http://localhost:8080/update_user_details', { username: myUsername, role: myRole }, { headers })
       .then((user) => {
-        if (user.data) {
+        console.log(Object.keys(user.data).length, user.data);
+        if (Object.keys(user.data).length > 1) {
           const { accessToken, user_id, role, username, isLoggedIn } = user.data;
           sessionStorage.setItem('accessToken', 'Bearer ' + accessToken);
           sessionStorage.setItem('user_id', user_id);
@@ -29,7 +30,7 @@ const ProfilDetails = () => {
             alert('Updates done successfully !');
             window.location.reload();
           }
-        }
+        } else alert(user.data.message);
       })
       .catch((err) => {
         console.log('error on axios post: ', err);
@@ -38,7 +39,7 @@ const ProfilDetails = () => {
 
   const handleRole = (e) => {
     e.preventDefault();
-    if (e.target.value !== role) {
+    if (e.target.value !== role && myUsername !== '') {
       setEnableSubmit(false)
     } else setEnableSubmit(true);
 
@@ -47,7 +48,7 @@ const ProfilDetails = () => {
 
   const handleUsername = (e) => {
     e.preventDefault();
-    if (e.target.value !== username) {
+    if (e.target.value !== username && e.target.value !== '') {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -73,7 +74,7 @@ const ProfilDetails = () => {
               <option value='moderator'>Moderator</option>
             </select>
           </div>
-          <button type='submit' disabled={enableSubmit}>Submit Changes</button>
+          <button type='submit' id='submit-user-details' disabled={enableSubmit}>Submit Changes</button>
         </form>
       </div>
     </div>

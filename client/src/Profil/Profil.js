@@ -55,7 +55,7 @@ const Profil = () => {
             <p>Follow my current and past transaction</p>
           </li>
           {role === 'moderator' || role === 'admin' ?
-            <li className='list-item' onClick={() => navigate('/')}>
+            <li className='list-item' onClick={() => navigate('/myshop')}>
               <img src={shop_icon} height='50' width='50' alt='shop' />
               <h2>Shop</h2>
               <p>Manage your shop details and products</p>
