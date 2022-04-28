@@ -136,13 +136,13 @@ const shopController = {
   get_shop_by_id: (req, res) => {
     const { id } = req.params;
 
-    if (isNaN(id)) return res.status(501).send({ message: 'id is not a number' });
+    if (isNaN(id)) return res.status(200).send({ message: 'id is not a number' });
 
     Shop.findAll({ where: { id: id } })
       .then((shop) => {
-        if (!Object.keys(shop).length) return res.status(501).send({ message: 'no shop for this id' });
+        if (!Object.keys(shop).length) return res.status(200).send({ message: 'no shop for this id' });
         const shop_id = shop.map((s) => { return s.dataValues.id });
-        if (!shop_id) { return res.status(501).send({ message: 'no shop find for this id' }) };
+        if (!shop_id) { return res.status(200).send({ message: 'no shop find for this id' }) };
 
         const datas = [];
 
@@ -157,19 +157,19 @@ const shopController = {
           })
           .catch((err) => {
             console.log('error on finding product', err);
-            return res.status(501).send({ message: 'error on finding product' });
+            return res.status(200).send({ message: 'error on finding product' });
           })
       })
       .catch((err) => {
         console.log('error on finding shop', err);
-        return res.status(501).send({ message: 'error on finiding shop' });
+        return res.status(200).send({ message: 'error on finiding shop' });
       })
   },
 
   get_shop_details: (req, res) => {
     const { id } = req.params;
 
-    if (isNaN(id)) return res.status(501).send({ message: 'id is not a number' });
+    if (isNaN(id)) return res.status(200).send({ message: 'id is not a number' });
 
     Shop.findAll({ where: { boss_id: id } })
       .then((shop) => {
@@ -183,11 +183,11 @@ const shopController = {
             id: id,
             boss_id: boss_id
           });
-        } else return res.status(501).send({ message: 'no shop find for this id' });
+        } else return res.status(200).send({ message: 'no shop find for this id' });
       }).catch((err) => {
         console.log('error on finding shop');
         console.log(err);
-        return res.status(501).send({ message: 'error on finding shop' });
+        return res.status(200).send({ message: 'error on finding shop' });
       });
   },
 }

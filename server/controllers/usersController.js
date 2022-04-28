@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 const { User, ROLES } = require('../models/user.model');
 require('dotenv').config();
 
@@ -107,29 +108,35 @@ const usersController = {
     if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
 
     // find user with username
-    User.findAll({ where: { id: id } })
+    User.findAll({ where: { username: username, id: { [Op.ne]: id } } })
       .then((user) => {
-        // check user found 
-        if (Object.keys(user).length) {
-          User.update({ username, role }, { where: { id: id } })
-            .then((new_user) => {
-              if (new_user) {
-                // create token
-                const payload = { username: username, role: role, id: id };
-                const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
-                return res.status(200).send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
-              } else return res.send({ message: 'no modifications done', isLoggedIn: false });
+        if (!Object.keys(user).length) {
+          User.findAll({ where: { id: id } })
+            .then((user) => {
+              // check user found
+              console.log(username !== user[0].dataValues.username);
+              if (Object.keys(user).length) {
+                User.update({ username, role }, { where: { id: id } })
+                  .then((new_user) => {
+                    if (new_user) {
+                      // create token
+                      const payload = { username: username, role: role, id: id };
+                      const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
+                      return res.status(200).send({ accessToken: accesToken, isLoggedIn: true, username: username, user_id: id, role: role });
+                    } else return res.send({ message: 'no modifications done' });
+                  })
+                  .catch((err) => {
+                    console.log('error on user update: ', err);
+                    return res.send({ message: 'error on user update' });
+                  })
+              } else return res.status(200).send({ message: 'no user found' });
             })
             .catch((err) => {
-              console.log('error on user update: ', err);
-              return res.send({ message: 'error on user update' });
+              console.log('error on find user');
+              console.log(err);
+              return res.send.status(501).send({ 'error': 'error on finding user', isLoggedIn: false });
             })
-        }
-      })
-      .catch((err) => {
-        console.log('error on find user');
-        console.log(err);
-        return res.send.status(501).send({ 'error': 'error on finding user', isLoggedIn: false });
+        } else return res.send({ message: 'Username already used' });
       })
   }
 }
