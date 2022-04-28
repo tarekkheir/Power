@@ -1,17 +1,19 @@
 .profil-shop {
-    max-width: 80%;
+    max-width: 90%;
     margin: 5rem auto;
 }
 
 .profil-shop-container {
     margin: 5rem auto;
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
 }
 
 .myshop {
     margin-top: 2rem;
     padding: 0 1rem;
-    width: 50%;
+    width: 90%;
 }
 
 .myshop h2 {
@@ -81,4 +83,75 @@
     background-color: #2ea44f;
     color: white;
     cursor: pointer;
+}
+
+#submit-delete-shop {
+    grid-area: delete;
+    min-width: 200px;
+    height: 40px;
+    margin: auto;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: rgba(196, 2, 2, 0.848);
+    color: white;
+    cursor: pointer;
+}
+
+.myshop-products {
+    margin-top: 2rem;
+    padding: 0 1rem;
+    width: 90%;
+}
+
+.myshop-products h2 {
+    text-align: center;
+}
+
+.myshop-products-list {
+    position: relative;
+    list-style: none;
+    padding: 3rem;
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.119);
+}
+
+.myshop-products-list-item {
+    box-shadow: rgba(26, 26, 26, 0.08) 0px -1px 4px 0px, rgba(26, 26, 26, 0.12) 0px 4px 8px 0px;
+    cursor: pointer;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.myshop-product-list-item-description {
+    padding: 0.8rem;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-rows: 1fr 1fr;
+}
+
+.myshop-product-list-item-description h4 {
+    margin: 0;
+}
+
+.myshop-product-list-item-image {
+    background-color: rgba(255, 212, 127, 0.493);
+}
+
+.myshop-products-list-item-button {
+    margin: auto 0;
+}
+
+#myshop-products-button {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+
 }

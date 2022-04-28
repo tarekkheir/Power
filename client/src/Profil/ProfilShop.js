@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import AppContext from '../App/AppContext';
 import './ProfilShop.css';
 import profil from '../images/profil.png';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilShop = () => {
   const [name, setName] = useState('');
@@ -15,6 +15,7 @@ const ProfilShop = () => {
   const context = useContext(AppContext);
   const { user_id, username } = context;
   const [shop, setShop] = useState([]);
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +33,23 @@ const ProfilShop = () => {
           setOpenHour(open);
           setCloseHour(close);
 
+          axios.get(`http://localhost:8080/shop/${id}`)
+            .then((products) => {
+              console.log('products from axios: ', products.data.length);
+              if (products.data.length > 0) {
+                const productsDatas = [];
+                products.data.map((product) => {
+                  const { name, type, price, quantity, id, boss_id } = product;
+                  productsDatas.push({ name: name, type: type, quantity: quantity, id: id, boss_id: boss_id, price: price });
+                  return 1;
+                })
+                setProducts(productsDatas);
+              } else console.log(products.data.message);
+            })
+            .catch((err) => {
+              console.log('axios get products error: ', err);
+            })
+
         } else console.log(shop.data.message);
       })
       .catch((err) => {
@@ -40,10 +58,49 @@ const ProfilShop = () => {
   }, [user_id])
 
 
+
   const updateShop = (e) => {
     e.preventDefault();
-    console.log('Update shop function called');
+    const open_hours = openHour + ' - ' + closeHour;
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = { 'authorization': accessToken };
+    axios.post('http://localhost:8080/update_shop_details', { name, location, type, open_hours }, { headers: headers })
+      .then((shop) => {
+        if (Object.keys(shop.data).length > 1) {
+          if (shop.data.success) {
+            alert(shop.data.message);
+            window.location.reload();
+          } else alert('update didn\'t success...')
+        } else alert(shop.data.message);
+      })
+      .catch((err) => {
+        console.log('error on axios update: ', err);
+      })
   }
+
+  const deleteShop = (e) => {
+    if (window.confirm('Are you sure to delete this shop ?')) {
+      e.preventDefault();
+      console.log('yes he want to delete this shop');
+      const accessToken = sessionStorage.getItem('accessToken');
+      const headers = { 'authorization': accessToken };
+      axios.post('http://localhost:8080/delete_shop', { boss_id: user_id }, { headers: headers })
+        .then((shop) => {
+          if (Object.keys(shop.data).length > 1) {
+            if (shop.data.success) {
+              alert(shop.data.message);
+              navigate('/profil');
+            } else alert('delete didn\'t success...');
+          } else alert(shop.data.message);
+        })
+        .catch((err) => {
+          console.log('error on axios delete: ', err);
+        })
+    } else {
+      console.log('no he love he\'s shop');
+    }
+  }
+
 
   const nameChange = (e) => {
     e.preventDefault();
@@ -90,7 +147,8 @@ const ProfilShop = () => {
     setCloseHour(e.target.value);
   }
 
-  console.log(shop);
+  console.log('shop: ', shop);
+  console.log('products: ', products);
 
   return (
     <div className='profil-shop'>
@@ -127,8 +185,9 @@ const ProfilShop = () => {
                   <option value='good food'>Good Food</option>
                 </select>
               </div>
-              <button disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>
+              <button type='submit' disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>
             </form>
+            <button id='submit-delete-shop' onClick={(e) => deleteShop(e)}>Delete Shop</button>
           </div>
         ) : (
           <div>
@@ -136,6 +195,28 @@ const ProfilShop = () => {
             <button onClick={() => navigate('/add_shop')}>Add Shop</button>
           </div>
         )}
+        {Object.keys(shop).length > 0 && Object.keys(products).length > 0 ? (
+          <div className='myshop-products'>
+            <h2>Products</h2>
+            <ul className='myshop-products-list'>
+              <button key={12345} id='myshop-products-button' onClick={() => navigate('/add_product')}>+</button>
+              {products.map((product) => {
+                return <li key={product.id} className='myshop-products-list-item'>
+                  <div className='myshop-product-list-item-image'></div>
+                  <div className='myshop-product-list-item-description'>
+                    <h4>{product.name}</h4>
+                    <span>Quantity ({product.quantity})</span>
+                  </div>
+                </li>
+              })}
+            </ul>
+          </div>
+        ) : Object.keys(shop).length > 0 && Object.keys(products).length === 0 ? (
+          <div className='myshop-products'>
+            <h2>No products...</h2>
+            <button onClick={() => navigate('/add_product')}>add product</button>
+          </div>
+        ) : (null)}
       </div>
     </div>
   );

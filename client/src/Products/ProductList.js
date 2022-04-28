@@ -17,8 +17,7 @@ const ProductList = ({ shop_id }) => {
             return 1;
           });
           setProducts(datas);
-          alert('done successfully !');
-        } else alert(res.data.message);
+        }
         console.log('axios done');
       })
       .catch((err) => {

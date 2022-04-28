@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './Product.css';
+import './ProductPage.css';
 
 const Product = () => {
   const location = useLocation();
@@ -29,20 +29,22 @@ const Product = () => {
     <div className='productpage'>
       <div className='product-image'>image</div>
       <div className='product-description'>
-        <h1>{name} ( {quantity} )</h1>
+        <h1>{name} ({quantity})</h1>
         <h3>Description</h3>
         <p>Le lorem ipsum est, en imprimerie, une suite de mots sans
           signification utilisée à titre provisoire pour calibrer
           une mise en page, le texte définitif venant remplacer le
           faux-texte dès qu'il est prêt ou que la mise en page est achevée.
           Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.</p>
-        <h4>{price}</h4>
+        <h4>{price} €</h4>
         <div className='count'>
           <button onClick={() => minus()}>-</button>
           <h4>{count}</h4>
           <button onClick={() => plus()}>+</button>
         </div>
-        <button disabled={disabled} className='cart-button' onClick={() => setCount(0)}>Add to Cart</button>
+        <button disabled={disabled} className='cart-button' onClick={() => setCount(0)}>
+          <span>{count * price} €</span>
+        </button>
       </div>
     </div >
   );

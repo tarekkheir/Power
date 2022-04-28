@@ -17,7 +17,7 @@ const ProductBox = ({ ...props }) => {
       <h4>{name}( {quantity} )</h4>
       <div className='image'></div>
       <ul className='product-infos'>
-        <li>{price}</li>
+        <li>{price} €</li>
         <li>{type}</li>
       </ul>
     </div>

@@ -54,18 +54,17 @@ const Profil = () => {
             <h2>Historical</h2>
             <p>Follow my current and past transaction</p>
           </li>
+          <li className='list-item' onClick={() => navigate('/')}>
+            <img src={cart} height='50' width='50' alt='cart' />
+            <h2>Cart</h2>
+            <p>Manage your cart and transaction</p>
+          </li>
           {role === 'moderator' || role === 'admin' ?
             <li className='list-item' onClick={() => navigate('/myshop')}>
               <img src={shop_icon} height='50' width='50' alt='shop' />
               <h2>Shop</h2>
               <p>Manage your shop details and products</p>
-            </li> :
-            <li className='list-item' onClick={() => navigate('/')}>
-              <img src={cart} height='50' width='50' alt='cart' />
-              <h2>My Cart</h2>
-              <p>Manage your cart and transaction</p>
-            </li>
-          }
+            </li> : (null)}
         </ul>
       </div>
     </div>
