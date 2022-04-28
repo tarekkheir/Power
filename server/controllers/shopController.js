@@ -1,6 +1,7 @@
 const { Product } = require('../models/product.model');
 const { Shop } = require('../models/shop.model');
 const { Op } = require('sequelize');
+const { Tunnel } = require('request/lib/tunnel');
 require('dotenv').config();
 
 
@@ -25,26 +26,19 @@ const shopController = {
                 console.log('Name already used !');
                 return res.status(200).send({ message: 'Name already used !' });
               } else {
-                Shop.findAll({ where: { location: location } })
+                Shop.create({
+                  name: name,
+                  location: location,
+                  boss_id: boss_id,
+                  type: type,
+                  open_hours: open_hours
+                })
                   .then((shop) => {
-                    if (Object.keys(shop).length && boss_id !== 1) {
-                      return res.status(200).send({ message: 'location already used !' });
-                    } else {
-                      Shop.create({
-                        name: name,
-                        location: location,
-                        boss_id: boss_id,
-                        type: type,
-                        open_hours: open_hours
-                      })
-                        .then((shop) => {
-                          console.log('Shop added !');
-                          return res.status(200).send({ message: 'Shop added successfully !' });
-                        })
-                        .catch((err) => {
-                          console.log('error on shop creation');
-                        })
-                    }
+                    console.log('Shop added !');
+                    return res.status(200).send({ message: 'Shop added successfully !' });
+                  })
+                  .catch((err) => {
+                    console.log('error on shop creation');
                   })
               }
             })
@@ -61,23 +55,23 @@ const shopController = {
     if (Object.keys(req.body).length > 1) return res.status(501).send({ message: 'too much parameters' });
     const { boss_id } = req.body;
     if (!boss_id) {
-      return res.status(501).send({ message: 'missing parameters' });
+      return res.status(200).send({ message: 'missing parameters' });
     }
 
     Shop.destroy({ where: { boss_id: boss_id } })
       .then((shop) => {
         if (shop) {
           console.log('Shop deleted !', shop);
-          return res.status(200).send({ message: 'Shop was successfully deleted !' });
+          return res.status(200).send({ message: 'Shop was successfully deleted !', success: true });
         } else {
           console.log('No shop to delete', shop);
-          return res.status(501).send({ message: 'no shop to delete' });
+          return res.status(200).send({ message: 'no shop to delete' });
         }
       })
       .catch((err) => {
         console.log('error on shop destroy');
         console.log(err);
-        return res.status(501).send({ message: 'error on shop destroy' });
+        return res.status(200).send({ message: 'error on shop destroy' });
       });
   },
 
@@ -94,10 +88,10 @@ const shopController = {
       location: location,
       type: type,
       open_hours: open_hours
-    }, { where: { [Op.and]: [{ name: name }, { boss_id: boss_id }] } })
+    }, { where: { boss_id: boss_id } })
       .then((shop) => {
         if (shop) {
-          return res.status(200).send({ message: 'shop details updated successfully !' });
+          return res.status(200).send({ message: 'shop details updated successfully !', success: true });
         } else {
           return res.status(501).send({ message: 'no shop updates done' });
         }
@@ -135,7 +129,7 @@ const shopController = {
 
   get_shop_by_id: (req, res) => {
     const { id } = req.params;
-
+    console.log(req.params);
     if (isNaN(id)) return res.status(200).send({ message: 'id is not a number' });
 
     Shop.findAll({ where: { id: id } })

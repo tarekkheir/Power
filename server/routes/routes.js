@@ -22,7 +22,7 @@ router.get('/myshop/:id', shopController.get_shop_details);
 router.post('/add_product', authModerator, productController.add_product);
 router.post('/delete_product', authModerator, productController.delete_product);
 router.post('/update_product', authModerator, productController.update_product);
-router.post('/shop_products', authUser, productController.get_shop_products);
+router.get('/shop_products/:id', authUser, productController.get_shop_products);
 
 
 

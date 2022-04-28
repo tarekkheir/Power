@@ -8,7 +8,7 @@ const productController = {
   add_product: (req, res) => {
     if (Object.keys(req.body).length > 5) return res.status(501).send({ message: 'too much parameters' });
     const { name, price, type, boss_id, quantity } = req.body;
-    if (!name || !price || !type || !boss_id || !quantity) {
+    if (!name || !price || !type || !boss_id) {
       return res.status(501).send({ message: 'missing parameters' });
     }
     console.log(boss_id);
@@ -114,12 +114,12 @@ const productController = {
 
   get_shop_products: (req, res) => {
     if (Object.keys(req.body).length > 1) return res.send({ message: 'too much parameters' });
-    const { name } = req.body;
-    if (!name) {
+    const { id } = req.params;
+    if (!id) {
       return res.status(501).send({ message: 'missing parameters' });
     }
 
-    Shop.findAll({ where: { name: name } })
+    Shop.findAll({ where: { id: id } })
       .then((shop) => {
         if (!Object.keys(shop).length) return res.status(501).send({ message: 'no shop found for this name' });
         else {
