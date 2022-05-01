@@ -1,3 +1,3 @@
 ## Power
 
-#### Projet FullStack ReactJs, NodeJs d'une application Web E-commerce
+#### Projet FullStack ReactJs, NodeJs d'une application Web E-commerce en cours de réalisation...
