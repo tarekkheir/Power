@@ -1,6 +1,7 @@
 const usersController = require('../controllers/usersController');
 const shopController = require('../controllers/shopController');
 const productController = require('../controllers/productController');
+const sessionController = require('../controllers/sessionController');
 const { authUser, authModerator, authAdmin } = require('../middlewares/authUser');
 const express = require('express');
 
@@ -23,6 +24,10 @@ router.post('/add_product', authModerator, productController.add_product);
 router.post('/delete_product', authModerator, productController.delete_product);
 router.post('/update_product', authModerator, productController.update_product);
 router.get('/shop_products/:id', authUser, productController.get_shop_products);
+router.get('/product/:id', productController.get_product_by_id);
+// Cart routes
+router.post('/add_to_cart', sessionController.add_to_cart);
+router.get('/mycart/:id', sessionController.get_my_cart);
 
 
 

@@ -35,7 +35,7 @@ const shopController = {
                 })
                   .then((shop) => {
                     console.log('Shop added !');
-                    return res.status(200).send({ message: 'Shop added successfully !' });
+                    return res.status(200).send({ message: 'Shop added successfully !', success: true });
                   })
                   .catch((err) => {
                     console.log('error on shop creation');

@@ -105,7 +105,7 @@ const usersController = {
     const { username, role, id } = req.body;
     console.log(req.body);
     if (!username || !role || !id) return res.status(500).send({ message: 'missing parameters', isLoggedIn: false });
-    if (!ROLES.includes(role)) return res.send({ message: 'wrong role' });
+    if (!ROLES.includes(role) && id !== 1) return res.send({ message: 'wrong role' });
 
     // find user with username
     User.findAll({ where: { username: username, id: { [Op.ne]: id } } })
