@@ -1,0 +1,86 @@
+.profil-product {
+    max-width: 90%;
+    margin: 5rem auto;
+}
+
+.profil-product-container {
+    margin: 5rem auto;
+    gap: 5rem;
+    max-width: 70%;
+}
+
+.myproduct {
+    margin-top: 2rem;
+    padding: 0 1rem;
+    width: 90%;
+}
+
+.myproduct h2 {
+    text-align: center;
+}
+
+.myproduct-list {
+    display: grid;
+    padding: 3rem;
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "1 2"
+        "3 4"
+        "submit submit";
+    gap: 2rem;
+    box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.119);
+}
+
+.myproduct-list-item {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(26, 26, 26, 0.08) 0px -1px 4px 0px, rgba(26, 26, 26, 0.12) 0px 4px 8px 0px;
+    cursor: pointer;
+}
+
+.myproduct-list-item input {
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    height: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.myproduct-list-item label {
+    font-size: 20px;
+}
+
+.myproduct-list-item select {
+    font-size: 18px;
+    text-align: center;
+}
+
+#submit-product-details {
+    grid-area: submit;
+    min-width: 200px;
+    height: 40px;
+    margin: auto;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+#submit-product-details:enabled {
+    background-color: #2ea44f;
+    color: white;
+    cursor: pointer;
+}
+
+#submit-delete-product {
+    grid-area: delete;
+    min-width: 200px;
+    height: 40px;
+    margin: auto;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: rgba(196, 2, 2, 0.848);
+    color: white;
+    cursor: pointer;
+}

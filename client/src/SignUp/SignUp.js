@@ -100,6 +100,7 @@ class SingUp extends React.Component {
           <input
             id='username'
             type='text'
+            maxLength={12}
             value={username}
             onChange={(event) => this.handleChangeUsername(event)} />
           <label>Password</label>

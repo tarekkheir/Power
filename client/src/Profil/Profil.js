@@ -54,7 +54,7 @@ const Profil = () => {
             <h2>Historical</h2>
             <p>Follow my current and past transaction</p>
           </li>
-          <li className='list-item' onClick={() => navigate('/')}>
+          <li className='list-item' onClick={() => navigate('/cart')}>
             <img src={cart} height='50' width='50' alt='cart' />
             <h2>Cart</h2>
             <p>Manage your cart and transaction</p>

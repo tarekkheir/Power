@@ -19,7 +19,7 @@
 .product-description {
     grid-area: description;
     display: grid;
-    grid-template-rows: 70px 50px 1fr 50px 70px 50px;
+    grid-template-rows: 1fr 50px 1fr 50px 70px 50px;
     padding: 1rem;
 }
 

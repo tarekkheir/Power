@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import AppContext from '../App/AppContext';
 import profil from '../images/profil.png';
 import './ProfilDetails.css';
 
@@ -10,6 +11,9 @@ const ProfilDetails = () => {
   const [myRole, setMyRole] = useState(role);
   const [myUsername, setMyUsername] = useState(username);
   const [enableSubmit, setEnableSubmit] = useState(true);
+  const context = useContext(AppContext);
+  const { user_id } = context;
+
 
   const postUpdates = (e) => {
     e.preventDefault();
@@ -72,6 +76,7 @@ const ProfilDetails = () => {
             <select value={myRole} name='role' onChange={(e) => handleRole(e)} >
               <option value='user'>User</option>
               <option value='moderator'>Moderator</option>
+              {Number(user_id) === 1 ? <option value='admin'>Admin</option> : null}
             </select>
           </div>
           <button type='submit' id='submit-user-details' disabled={enableSubmit}>Submit Changes</button>

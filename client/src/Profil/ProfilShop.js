@@ -69,7 +69,7 @@ const ProfilShop = () => {
         if (Object.keys(shop.data).length > 1) {
           if (shop.data.success) {
             alert(shop.data.message);
-            window.location.reload();
+            navigate('/profil');
           } else alert('update didn\'t success...')
         } else alert(shop.data.message);
       })
@@ -89,7 +89,7 @@ const ProfilShop = () => {
           if (Object.keys(shop.data).length > 1) {
             if (shop.data.success) {
               alert(shop.data.message);
-              navigate('/profil');
+              navigate('/myshop');
             } else alert('delete didn\'t success...');
           } else alert(shop.data.message);
         })
@@ -201,11 +201,11 @@ const ProfilShop = () => {
             <ul className='myshop-products-list'>
               <button key={12345} id='myshop-products-button' onClick={() => navigate('/add_product')}>+</button>
               {products.map((product) => {
-                return <li key={product.id} className='myshop-products-list-item'>
+                return <li key={product.id} className='myshop-products-list-item' onClick={() => navigate(`/product_details/${product.id}`)}>
                   <div className='myshop-product-list-item-image'></div>
                   <div className='myshop-product-list-item-description'>
-                    <h4>{product.name}</h4>
-                    <span>Quantity ({product.quantity})</span>
+                    <h4>{product.name} ({product.quantity})</h4>
+                    <span>Price {product.price} €</span>
                   </div>
                 </li>
               })}
