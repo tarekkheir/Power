@@ -24,7 +24,7 @@ const AddProduct = () => {
                 console.log(res.data);
                 const { message } = res.data;
                 alert(message);
-                navigate('/myshop');
+                navigate('/profil/myshop');
             })
             .catch((err) => {
                 console.log('error on axios add shop post', err);

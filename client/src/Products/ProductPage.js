@@ -47,7 +47,7 @@ const Product = () => {
       .then((cart) => {
         if (cart.data.success) {
           alert(cart.data.message);
-          navigate(`/cart`);
+          navigate(`/profil/cart`);
         } else alert(cart.data.message);
       })
       .catch((err) => {

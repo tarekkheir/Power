@@ -1,3 +1,9 @@
+.navbar {
+    border: 1px solid black;
+    height: 120px;
+    background-color: #92a8d1;
+}
+
 .center {
     display: flex;
     align-items: center;
@@ -9,4 +15,34 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 2rem;
+    text-decoration: none;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.links a:visited,
+a:link,
+a:hover,
+a:active {
+    color: white;
+    text-decoration: none;
+}
+
+.links-item {}
+
+.link {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 1rem;
+    justify-items: baseline;
+    max-height: 40px;
+}
+
+#home {
+    color: white;
 }

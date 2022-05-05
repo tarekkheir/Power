@@ -2,11 +2,45 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.5rem;
+    font-size: 14px;
+    padding: 0 1rem;
+}
+
+.form input {
+    padding: 5px 12px;
+    border-radius: 6px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 2rem;
+}
+
+.form label {
+    font-size: 20px;
+    margin-bottom: 0.5rem;
 }
 
 .login {
     max-width: 500px;
-    margin: auto;
-    margin-top: 5rem;
+    padding: 2rem;
+    background-color: white;
+    margin: 15rem auto 0;
+    font-size: 14px;
+    box-shadow: 0 2px 2px 2px rgba(113, 113, 113, 0.18);
+}
+
+.login button {
+    background-color: #238636;
+    color: white;
+    border: 0;
+    padding: 16px 5px;
+    font-weight: 500;
+    font-size: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#title {
     text-align: center;
+    margin-top: 0;
 }

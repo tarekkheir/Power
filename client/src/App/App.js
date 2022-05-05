@@ -3,9 +3,9 @@ import './App.css';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import Home from '../Home/Home';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProtectedRoute from '../Routes/ProtectedRoute';
-import AppContext, { user } from './AppContext';
+import AppContext from './AppContext';
 import SignUp from '../SignUp/SignUp';
 import Shop from '../Shops/Shop';
 import Product from '../Products/ProductPage';
@@ -18,79 +18,69 @@ import ProfilProduct from '../Profil/ProfilProduct';
 import Cart from '../Cart/Cart';
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [user_id, setUser_id] = useState(0);
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    const session_username = sessionStorage.getItem('username');
+    const session_user_id = sessionStorage.getItem('user_id');
+    const session_role = sessionStorage.getItem('role');
+    const session_isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+    if (!session_isLoggedIn || !session_role || !session_user_id || !session_username) {
+      console.log('Items in session are null');
+    } else {
+      setIsLoggedIn(session_isLoggedIn);
+      setRole(session_role);
+      setUsername(session_username);
+      setUser_id(session_user_id);
     }
 
-    this.logIn = this.logIn.bind(this);
-    this.logOut = this.logOut.bind(this);
-  }
+  }, [isLoggedIn, username, user_id, role])
 
-  componentDidMount() {
-    const username = sessionStorage.getItem('username');
-    const role = sessionStorage.getItem('role');
-    const user_id = sessionStorage.getItem('user_id');
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-
-    this.setState({
-      user: {
-        username: username,
-        role: role,
-        user_id: user_id,
-        isLoggedIn: isLoggedIn
-      }
-    })
-  }
-
-  logOut = () => {
-    this.setState({ user })
+  const logOut = () => {
+    setUsername('');
+    setRole('');
+    setIsLoggedIn(false);
+    setUser_id(0);
     sessionStorage.clear();
+    window.location.reload();
   };
 
-  logIn = (username, role, user_id) => {
-    this.setState({
-      user: {
-        isLoggedIn: true,
-        username: username,
-        role: role,
-        user_id: user_id
-      }
-    })
+  const logIn = (username, role, user_id) => {
+    setUsername(username);
+    setRole(role);
+    setIsLoggedIn(true);
+    setUser_id(user_id);
   }
-
-
-  render() {
-    console.log('App rendering');
-    const { user: { isLoggedIn } } = this.state;
-    return (
-      <AppContext.Provider value={this.state.user}>
-        <div className="App">
-          <BrowserRouter>
-            <NavBar logOut={this.logOut} />
-            <Routes>
-              <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
-                <Route path='/' element={<Home />} />
-                <Route path='/shop/:id' element={<Shop />} />
-                <Route path='/shop/:id/product/:id' element={<Product />} />
-                <Route path='/profil' element={<Profil />} />
-                <Route path='/profil_details' element={<ProfilDetails />} />
-                <Route path='/add_shop' element={<AddShop />} />
-                <Route path='/myshop' element={<ProfilShop />} />
-                <Route path='/add_product' element={<AddProduct />} />
-                <Route path='/product_details/:id' element={<ProfilProduct />} />
-                <Route path='/cart' element={<Cart />} />
-              </Route>
-              <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login logIn={this.logIn} />} />
-              <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={this.logIn} />} />
-            </Routes>
-          </BrowserRouter>
-        </div >
-      </AppContext.Provider >
-    );
-  }
+  return (
+    <AppContext.Provider value={{ isLoggedIn, role, user_id, username }}>
+      <div className="App">
+        <BrowserRouter>
+          <NavBar logOut={logOut} />
+          <Routes>
+            <Route element={<ProtectedRoute />}>
+              <Route path='/' element={<Home />} />
+              <Route path='/shop/:id' element={<Shop />} />
+              <Route path='/shop/:id/product/:id' element={<Product />} />
+              <Route path='/profil' element={<Profil />} />
+              <Route path='/profil/myshop' element={<ProfilShop />} />
+              <Route path='/profil/profil_details' element={<ProfilDetails />} />
+              <Route path='/profil/myshop/add_shop' element={<AddShop />} />
+              <Route path='/profil/myshop/add_product' element={<AddProduct />} />
+              <Route path='/profil/myshop/product_details/:id' element={<ProfilProduct />} />
+              <Route path='/profil/cart' element={<Cart />} />
+            </Route>
+            <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login logIn={logIn} />} />
+            <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={logIn} />} />
+          </Routes>
+        </BrowserRouter>
+      </div >
+    </AppContext.Provider >
+  );
 }
 
 export default App;

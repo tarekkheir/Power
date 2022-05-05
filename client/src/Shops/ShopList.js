@@ -13,7 +13,6 @@ const ShopList = () => {
         if (!res.data.message) {
           setShops(res.data);
         } else alert(res.data.message);
-        console.log('axios done');
       } catch (err) {
         console.log('axios error', err);
       }
@@ -21,7 +20,6 @@ const ShopList = () => {
     fetchData();
   }, []);
 
-  console.log('shops: ', shops);
 
   return (
     <div className='shops-list'>

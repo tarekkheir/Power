@@ -8,7 +8,7 @@
     grid-template-columns: 1fr;
     list-style: none;
     padding: 0;
-    margin: 5rem auto;
+    margin: auto;
     gap: 1rem;
 }
 
@@ -57,4 +57,8 @@
 #cart-product-price,
 #cart-product-name {
     margin: auto;
+}
+
+#my-cart-text {
+    margin-top: 5rem;
 }

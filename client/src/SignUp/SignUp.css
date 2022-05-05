@@ -9,3 +9,10 @@
     margin: auto;
     margin-top: 5rem;
 }
+
+#select-role {
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 3rem;
+    text-align: center;
+}

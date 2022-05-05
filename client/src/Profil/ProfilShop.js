@@ -35,10 +35,9 @@ const ProfilShop = () => {
 
           axios.get(`http://localhost:8080/shop/${id}`)
             .then((products) => {
-              console.log('products from axios: ', products.data.length);
-              if (products.data.length > 0) {
+              if (products.data.success) {
                 const productsDatas = [];
-                products.data.map((product) => {
+                products.data.datas.map((product) => {
                   const { name, type, price, quantity, id, boss_id } = product;
                   productsDatas.push({ name: name, type: type, quantity: quantity, id: id, boss_id: boss_id, price: price });
                   return 1;
@@ -69,7 +68,7 @@ const ProfilShop = () => {
         if (Object.keys(shop.data).length > 1) {
           if (shop.data.success) {
             alert(shop.data.message);
-            navigate('/profil');
+            window.location.reload();
           } else alert('update didn\'t success...')
         } else alert(shop.data.message);
       })
@@ -81,7 +80,6 @@ const ProfilShop = () => {
   const deleteShop = (e) => {
     if (window.confirm('Are you sure to delete this shop ?')) {
       e.preventDefault();
-      console.log('yes he want to delete this shop');
       const accessToken = sessionStorage.getItem('accessToken');
       const headers = { 'authorization': accessToken };
       axios.post('http://localhost:8080/delete_shop', { boss_id: user_id }, { headers: headers })
@@ -89,7 +87,7 @@ const ProfilShop = () => {
           if (Object.keys(shop.data).length > 1) {
             if (shop.data.success) {
               alert(shop.data.message);
-              navigate('/myshop');
+              window.location.reload();
             } else alert('delete didn\'t success...');
           } else alert(shop.data.message);
         })
@@ -132,7 +130,6 @@ const ProfilShop = () => {
   const openhourChange = (e) => {
     e.preventDefault();
     if (e.target.value !== shop.open && e.target.value && name && location && closeHour) {
-      console.log('enter to enable');
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -146,9 +143,6 @@ const ProfilShop = () => {
 
     setCloseHour(e.target.value);
   }
-
-  console.log('shop: ', shop);
-  console.log('products: ', products);
 
   return (
     <div className='profil-shop'>
@@ -192,16 +186,16 @@ const ProfilShop = () => {
         ) : (
           <div>
             <h3>You have no shop registered</h3>
-            <button onClick={() => navigate('/add_shop')}>Add Shop</button>
+            <button onClick={() => navigate('/profil/myshop/add_shop')}>Add Shop</button>
           </div>
         )}
         {Object.keys(shop).length > 0 && Object.keys(products).length > 0 ? (
           <div className='myshop-products'>
             <h2>Products</h2>
             <ul className='myshop-products-list'>
-              <button key={12345} id='myshop-products-button' onClick={() => navigate('/add_product')}>+</button>
+              <button key={12345} id='myshop-products-button' onClick={() => navigate('/profil/myshop/add_product')}>+</button>
               {products.map((product) => {
-                return <li key={product.id} className='myshop-products-list-item' onClick={() => navigate(`/product_details/${product.id}`)}>
+                return <li key={product.id} className='myshop-products-list-item' onClick={() => navigate(`/profil/myshop/product_details/${product.id}`)}>
                   <div className='myshop-product-list-item-image'></div>
                   <div className='myshop-product-list-item-description'>
                     <h4>{product.name} ({product.quantity})</h4>
@@ -214,7 +208,7 @@ const ProfilShop = () => {
         ) : Object.keys(shop).length > 0 && Object.keys(products).length === 0 ? (
           <div className='myshop-products'>
             <h2>No products...</h2>
-            <button onClick={() => navigate('/add_product')}>add product</button>
+            <button onClick={() => navigate('/profil/myshop/add_product')}>add product</button>
           </div>
         ) : (null)}
       </div>

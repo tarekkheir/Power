@@ -24,7 +24,6 @@ class Login extends React.Component {
       await axios.post('http://localhost:8080/login', { username: username, password: password })
         .then((res) => {
           const { isLoggedIn } = res.data;
-          console.log(res.data);
           if (!isLoggedIn) alert(res.data.message);
           else {
             const { accessToken, username, role, user_id } = res.data;
@@ -70,7 +69,7 @@ class Login extends React.Component {
 
     return (
       <div className='login'>
-        <h1>Login</h1>
+        <h1 id='title'>LOGIN</h1>
         <form className='form' onSubmit={(event) => this.postUser(event)}>
           <label>Username</label>
           <input
@@ -85,7 +84,7 @@ class Login extends React.Component {
             name="password"
             value={password}
             onChange={(event) => this.handleChangePassword(event)} />
-          <button type='submit' disabled={!enableSubmit} >Submit</button>
+          <button type='submit' disabled={!enableSubmit} >Sign !n</button>
         </form>
       </div>
     );

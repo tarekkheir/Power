@@ -3,12 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppContext from '../App/AppContext';
 import './ProfilProduct.css';
+import profil from '../images/profil.png';
 
 const ProfilProduct = () => {
   const params = useParams();
   const { id } = params;
   const context = useContext(AppContext);
-  const { user_id } = context;
+  const { user_id, username } = context;
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [type, setType] = useState('');
@@ -20,19 +21,22 @@ const ProfilProduct = () => {
   useEffect(() => {
     axios.get(`http://localhost:8080/product/${id}`)
       .then((product) => {
-        if (Object.keys(product.data).length > 1) {
+        if (product.data.success) {
           const { name, price, type, quantity, id } = product.data;
           setName(name);
           setPrice(price);
           setQuantity(quantity);
           setType(type);
           setProduct({ name, price, type, quantity, id });
-        } else console.log(product.data.message);
+        } else {
+          console.log(product.data.message);
+          navigate('/profil');
+        }
       })
       .catch((err) => {
         console.log('error on axios get product', err);
       })
-  }, [id])
+  }, [id, navigate])
 
   const updateProduct = (e) => {
     e.preventDefault();
@@ -45,7 +49,7 @@ const ProfilProduct = () => {
         if (Object.keys(product.data).length > 1) {
           if (product.data.success) {
             alert(product.data.message);
-            navigate('/myshop');
+            navigate('/profil/myshop');
           }
         } else console.log(product.data.message);
       })
@@ -55,18 +59,21 @@ const ProfilProduct = () => {
   }
 
   const deleteProduct = (e) => {
-    const accessToken = sessionStorage.getItem('accessToken');
-    const headers = { 'authorization': accessToken };
-    axios.post('http://localhost:8080/delete_product', { id: id, boss_id: user_id }, { headers: headers })
-      .then((product) => {
-        if (product.data.success) {
-          alert(product.data.message);
-          navigate('/myshop');
-        } else console.log(product.data.message);
-      })
-      .catch((err) => {
-        console.log('error on axios post delete: ', err);
-      })
+    if (window.confirm('Are you sure to delete this shop ?')) {
+      e.preventDefault();
+      const accessToken = sessionStorage.getItem('accessToken');
+      const headers = { 'authorization': accessToken };
+      axios.post('http://localhost:8080/delete_product', { id: id, boss_id: user_id }, { headers: headers })
+        .then((product) => {
+          if (product.data.success) {
+            alert(product.data.message);
+            navigate('/profil/myshop');
+          } else console.log(product.data.message);
+        })
+        .catch((err) => {
+          console.log('error on axios post delete: ', err);
+        })
+    }
   }
 
   const nameChange = (e) => {
@@ -107,6 +114,10 @@ const ProfilProduct = () => {
 
   return (
     <div className='profil-product'>
+      <div className='profil-name'>
+        <img src={profil} height='70' width='70' alt='profil' />
+        <h1>{username}</h1>
+      </div>
       <div className='profil-product-container'>
         <h2>{name}</h2>
         <form className='myproduct-list' onSubmit={(e) => updateProduct(e)}>

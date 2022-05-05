@@ -87,7 +87,7 @@ class SingUp extends React.Component {
 
     return (
       <div className='login'>
-        <h1>Sign Up</h1>
+        <h1 id='title'>Sign Up</h1>
         <form className='form' onSubmit={(event) => this.postUser(event)}>
           <label>Email</label>
           <input
@@ -110,7 +110,7 @@ class SingUp extends React.Component {
             name="password"
             value={password}
             onChange={(event) => this.handleChangePassword(event)} />
-          <select name="role" value={role} onChange={(e) => this.handleRole(e)}>
+          <select id='select-role' name="role" value={role} onChange={(e) => this.handleRole(e)}>
             <option value="user">User</option>
             <option value="moderator">Moderator</option>
           </select>

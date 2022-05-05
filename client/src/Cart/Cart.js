@@ -47,6 +47,7 @@ const Cart = () => {
         <img src={profil} height='70' width='70' alt='profil' />
         <h1>{username}</h1>
       </div>
+      <h2 id='my-cart-text'>My Cart</h2>
       <ul className='list-cart'>
         {products.length > 0 ? (
           products.map((product) => {
