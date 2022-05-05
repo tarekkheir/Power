@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AppContext from '../App/AppContext';
 import profil from '../images/profil.png';
 import './ProfilDetails.css';
@@ -13,7 +13,6 @@ const ProfilDetails = () => {
   const [enableSubmit, setEnableSubmit] = useState(true);
   const context = useContext(AppContext);
   const { user_id } = context;
-  const navigate = useNavigate();
 
 
   const postUpdates = (e) => {
@@ -33,7 +32,7 @@ const ProfilDetails = () => {
 
           if (isLoggedIn) {
             alert('Updates done successfully !');
-            navigate('/profil')
+            window.location.assign('http://localhost:3000/');
           }
         } else alert(user.data.message);
       })

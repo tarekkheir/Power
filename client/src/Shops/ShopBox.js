@@ -7,7 +7,7 @@ const ShopBox = ({ ...props }) => {
   const { name, location, type, shop_id } = props;
 
   return (
-    <div className='shopbox' onClick={() => navigate(`/shop/${shop_id}`)}>
+    <div className='shopbox' onClick={() => navigate(`/shop/${shop_id}`, { state: { shop_name: name } })}>
       <div className='image'></div>
       <div className='details'>
         <div className='name'>
