@@ -125,10 +125,8 @@ const productController = {
       .then((shop) => {
         if (!Object.keys(shop).length) return res.status(501).send({ message: 'no shop found for this name', success: false });
         else {
-          const shop_id = shop.map((s) => {
-            const { id } = s.dataValues;
-            return id
-          });
+          const shop_id = shop[0].dataValues.id;
+          const shop_name = shop[0].dataValues.name;
 
           Product.findAll({ where: { shop_id: shop_id } })
             .then((product) => {
@@ -140,7 +138,7 @@ const productController = {
                   const { name, price, type, quantity, id } = p.dataValues;
                   products.push({ name, price, type, quantity, id });
                 });
-                return res.send({ products, success: true });
+                return res.send({ products, success: true, shop_name });
               }
             })
         }
