@@ -147,7 +147,7 @@ const shopController = {
               const { name, price, type, quantity, id, boss_id } = product.dataValues;
               datas.push({ name, price, type, quantity, id, boss_id });
             })
-            return res.status(200).send(datas);
+            return res.status(200).send({ datas, success: true });
           })
           .catch((err) => {
             console.log('error on finding product', err);

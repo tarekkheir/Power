@@ -27,6 +27,7 @@ router.get('/shop_products/:id', authUser, productController.get_shop_products);
 router.get('/product/:id', productController.get_product_by_id);
 // Cart routes
 router.post('/add_to_cart', sessionController.add_to_cart);
+router.post('/delete_from_cart', sessionController.delete_from_cart);
 router.get('/mycart/:id', sessionController.get_my_cart);
 
 

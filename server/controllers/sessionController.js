@@ -22,7 +22,8 @@ const sessionController = {
                 if (Object.keys(cart).length) {
                   const cart_quantity = Number(cart[0].dataValues.quantity) + Number(quantity);
 
-                  Cart.update({ quantity: cart_quantity, expire_date: Number(expire_date) }, { where: { [Op.and]: [{ user_id: user_id, product_id: product_id }] } })
+                  Cart.update({ quantity: cart_quantity, expire_date: Number(expire_date) },
+                    { where: { [Op.and]: [{ user_id: user_id, product_id: product_id }] } })
                     .then((cart) => {
 
                       if (cart) {
@@ -44,7 +45,15 @@ const sessionController = {
                       return res.status(200).send({ message: 'error on cart update', success: false });
                     })
                 } else {
-                  Cart.create({ quantity: quantity, product_id: product_id, user_id: user_id, name: name, expire_date: Number(expire_date), price: price, shop_id: shop_id })
+                  Cart.create({
+                    quantity: quantity,
+                    product_id: product_id,
+                    user_id: user_id,
+                    name: name,
+                    expire_date: Number(expire_date),
+                    price: price,
+                    shop_id: shop_id
+                  })
                     .then((cart) => {
 
                       Product.update({ quantity: new_quantity }, { where: { [Op.and]: [{ shop_id: shop_id, id: product_id }] } })
@@ -95,6 +104,54 @@ const sessionController = {
       .catch((err) => {
         console.log('error on getting cart: ', err);
         return res.status(200).send({ message: 'Error on finding cart', success: false });
+      })
+  },
+
+  delete_from_cart: (req, res) => {
+    if (Object.keys(req.body).length > 4) return res.send({ message: 'too much parameters', success: false });
+    const { product_id, user_id, quantity, shop_id } = req.body;
+    if (!product_id || !user_id || !quantity || !shop_id) return res.status(200).send({ message: 'missing parameters', success: false });
+
+    Product.findAll({ where: { id: product_id, shop_id: shop_id } })
+      .then((product) => {
+        if (Object.keys(product).length) {
+
+          Cart.findAll({ where: { product_id: product_id, user_id: user_id, shop_id: shop_id } })
+            .then((cart) => {
+              if (Object.keys(cart).length) {
+                const total = Number(product[0].dataValues.quantity) + Number(quantity);
+
+                Product.update({ quantity: total }, { where: { id: product_id, shop_id: shop_id } })
+                  .then((product) => {
+                    if (!product) return res.status(200).send({ message: 'Product update but Cart fail to update...', success: false });
+                  })
+                  .catch((err) => {
+                    console.log('error on product update: ', err);
+                    return res.status(200).send({ message: 'error on product update', success: false });
+                  })
+
+                Cart.destroy({ where: { user_id: user_id, product_id: product_id, shop_id: shop_id } })
+                  .then((cart) => {
+                    if (!cart) return res.status(200).send({ message: 'Cart fail to destroy', success: false });
+                  })
+                  .catch((err) => {
+                    console.log('error on cart destroy: ', err);
+                    return res.status(200).send({ message: 'error on cart destroy', success: false });
+                  })
+
+                return res.status(200).send({ message: 'Deleted from the Cart successfully !', success: true });
+
+              } else return res.status(200).send({ message: 'no product find in cart', success: false });
+            })
+            .catch((err) => {
+              console.log('error on findind cart product: ', err);
+              return res.status(200).send({ message: 'error on findind cart product', success: false });
+            })
+        } else return res.status(200).send({ message: 'No product find...', success: false });
+      })
+      .catch((err) => {
+        console.log('error on finding product: ', err);
+        return res.status(200).send({ message: 'error on finding product', success: false });
       })
   }
 
