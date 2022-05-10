@@ -10,8 +10,8 @@ const ShopList = () => {
     async function fetchData() {
       try {
         const res = await axios.get('http://localhost:8080/shops');
-        if (!res.data.message) {
-          setShops(res.data);
+        if (res.data.success) {
+          setShops(res.data.data);
         } else alert(res.data.message);
       } catch (err) {
         console.log('axios error', err);

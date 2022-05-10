@@ -16,53 +16,69 @@ import ProfilShop from '../Profil/ProfilShop';
 import AddProduct from '../Products/AddProduct';
 import ProfilProduct from '../Profil/ProfilProduct';
 import Cart from '../Cart/Cart';
+import axios from 'axios';
 
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-  const [user_id, setUser_id] = useState(0);
-  const [role, setRole] = useState('');
+  const [user, setUser] = useState({
+    isLoggedIn: false,
+    user_id: 0,
+    username: '',
+    role: '',
+    money: 0,
+  });
 
   useEffect(() => {
-    const session_username = sessionStorage.getItem('username');
-    const session_user_id = sessionStorage.getItem('user_id');
-    const session_role = sessionStorage.getItem('role');
     const session_isLoggedIn = sessionStorage.getItem('isLoggedIn');
-
-    if (!session_isLoggedIn || !session_role || !session_user_id || !session_username) {
-      console.log('Items in session are null');
-    } else {
-      setIsLoggedIn(session_isLoggedIn);
-      setRole(session_role);
-      setUsername(session_username);
-      setUser_id(session_user_id);
+    if (session_isLoggedIn) {
+      const session_user_id = sessionStorage.getItem('user_id');
+      const session_accessToken = sessionStorage.getItem('accessToken');
+      const headers = { 'authorization': session_accessToken };
+      axios.get('http://localhost:8080/user_details', { headers: headers })
+        .then((user) => {
+          if (user.data.success) {
+            const { role, username, money } = user.data;
+            setUser({
+              accessToken: session_accessToken,
+              isLoggedIn: session_isLoggedIn,
+              user_id: session_user_id,
+              role: role,
+              username: username,
+              money: money
+            });
+          } else console.log(user.data);
+        })
+        .catch((err) => {
+          console.log('App axios error get user details: ', err);
+        })
     }
-
-  }, [isLoggedIn, username, user_id, role])
+  }, [])
 
   const logOut = () => {
-    setUsername('');
-    setRole('');
-    setIsLoggedIn(false);
-    setUser_id(0);
+    setUser({ isLoggedIn: false, role: '', username: '', user_id: 0, accessToken: '', money: 0 });
     sessionStorage.clear();
     window.location.reload();
   };
 
-  const logIn = (username, role, user_id) => {
-    setUsername(username);
-    setRole(role);
-    setIsLoggedIn(true);
-    setUser_id(user_id);
+  const logIn = (username, role, user_id, money, isLoggedIn, accessToken) => {
+    setUser({ isLoggedIn: isLoggedIn, role: role, username: username, user_id: user_id, money: money });
+    sessionStorage.setItem('accessToken', `Bearer ${accessToken}`);
+    sessionStorage.setItem('user_id', user_id);
+    sessionStorage.setItem('isLoggedIn', isLoggedIn);
   }
+
+  const update_details = (role, username, money) => {
+    setUser({ role: role, username: username, money: money });
+  }
+
+
   return (
-    <AppContext.Provider value={{ isLoggedIn, role, user_id, username }}>
+    <AppContext.Provider value={{ user, update_details }}>
       <div className="App">
         <BrowserRouter>
           <NavBar logOut={logOut} />
           <Routes>
-            <Route element={<ProtectedRoute />}>
+            <Route element={<ProtectedRoute isLoggedIn={user.isLoggedIn} />}>
               <Route path='/' element={<Home />} />
               <Route path='/shop/:id' element={<Shop />} />
               <Route path='/shop/:id/product/:id' element={<Product />} />
@@ -74,8 +90,8 @@ const App = () => {
               <Route path='/profil/myshop/product_details/:id' element={<ProfilProduct />} />
               <Route path='/profil/cart' element={<Cart />} />
             </Route>
-            <Route path='/login' element={isLoggedIn ? <Navigate to='/' /> : <Login logIn={logIn} />} />
-            <Route path='/signup' element={isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={logIn} />} />
+            <Route path='/login' element={user.isLoggedIn ? <Navigate to='/' /> : <Login logIn={logIn} />} />
+            <Route path='/signup' element={user.isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={logIn} />} />
           </Routes>
         </BrowserRouter>
       </div >

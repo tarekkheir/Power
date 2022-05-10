@@ -10,7 +10,7 @@ const Cart = () => {
   const context = useContext(AppContext);
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { username, user_id } = context;
+  const { user: { username, user_id, money } } = context;
 
 
   useEffect(() => {
@@ -39,6 +39,24 @@ const Cart = () => {
       })
   }, [user_id])
 
+  const buyItem = (e) => {
+    if (window.confirm('Buy all items in the cart ?')) {
+      e.preventDefault();
+      console.log('Buy Items: ', products);
+
+      axios.post('http://localhost:8080/buy_cart', { products, user_id, totalPrice })
+        .then((buy) => {
+          if (buy.data.success) {
+            alert(buy.data.message);
+            window.location.reload();
+          } else alert(buy.data.message)
+        })
+        .catch((err) => {
+          console.log('error on buy cart: ', err);
+        })
+    }
+  }
+
   console.log('products: ', products);
 
   return (
@@ -48,6 +66,7 @@ const Cart = () => {
         <h1>{username}</h1>
       </div>
       <h2 id='my-cart-text'>My Cart</h2>
+      <h3>Money: {money} €</h3>
       <ul className='list-cart'>
         {products.length > 0 ? (
           products.map((product) => {
@@ -56,7 +75,7 @@ const Cart = () => {
           })
         ) : <h2>No products in your Cart...</h2>}
       </ul>
-      <h3>Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €</h3>
+      <button disabled={totalPrice > 0 ? false : true} id='buy_item' onClick={(e) => buyItem(e)}>Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €</button>
     </div >
   );
 };

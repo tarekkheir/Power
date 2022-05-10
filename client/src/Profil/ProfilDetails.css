@@ -9,6 +9,7 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "1 2"
+        "1 2"
         "submit submit";
     gap: 2rem;
     padding: 2rem;

@@ -62,3 +62,11 @@
 #my-cart-text {
     margin-top: 5rem;
 }
+
+#buy_item {
+    cursor: pointer;
+    margin-top: 2rem;
+    padding: 1rem;
+    font-size: 20px;
+    font-weight: 500;
+}

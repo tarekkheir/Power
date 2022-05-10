@@ -1,39 +1,32 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AppContext from '../App/AppContext';
 import profil from '../images/profil.png';
 import './ProfilDetails.css';
 
 const ProfilDetails = () => {
-  const location = useLocation();
-  const { username, role } = location.state;
+  const context = useContext(AppContext);
+  const { user: { user_id, username, role, money }, update_details } = context;
   const [myRole, setMyRole] = useState(role);
   const [myUsername, setMyUsername] = useState(username);
+  const [myMoney, setMyMoney] = useState(money);
   const [enableSubmit, setEnableSubmit] = useState(true);
-  const context = useContext(AppContext);
-  const { user_id } = context;
+  const navigate = useNavigate();
 
 
   const postUpdates = (e) => {
     e.preventDefault();
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
-    axios.post('http://localhost:8080/update_user_details', { username: myUsername, role: myRole }, { headers })
+    axios.post('http://localhost:8080/update_user_details', { username: myUsername, role: myRole, money: myMoney }, { headers: headers })
       .then((user) => {
-        console.log(Object.keys(user.data).length, user.data);
-        if (Object.keys(user.data).length > 1) {
-          const { accessToken, user_id, role, username, isLoggedIn } = user.data;
-          sessionStorage.setItem('accessToken', 'Bearer ' + accessToken);
-          sessionStorage.setItem('user_id', user_id);
-          sessionStorage.setItem('username', username);
-          sessionStorage.setItem('role', role);
-          sessionStorage.setItem('isLoggedIn', isLoggedIn);
-
-          if (isLoggedIn) {
-            alert('Updates done successfully !');
-            window.location.assign('http://localhost:3000/');
-          }
+        if (user.data.success) {
+          const { role, username, money, accessToken } = user.data;
+          sessionStorage.setItem('accessToken', `Bearer ${accessToken}`);
+          update_details(role, username, money);
+          alert('Updates done successfully !');
+          navigate('/profil');
         } else alert(user.data.message);
       })
       .catch((err) => {
@@ -52,11 +45,20 @@ const ProfilDetails = () => {
 
   const handleUsername = (e) => {
     e.preventDefault();
-    if (e.target.value !== username && e.target.value !== '') {
+    if (e.target.value !== username && e.target.value !== '' && myRole !== '') {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
     setMyUsername(e.target.value);
+  }
+
+  const handleMoney = (e) => {
+    e.preventDefault();
+    if (e.target.value !== money && e.target.value !== '' && myUsername !== '' && myRole !== '') {
+      setEnableSubmit(false);
+    } else setEnableSubmit(true);
+
+    setMyMoney(e.target.value);
   }
 
   return (
@@ -78,6 +80,10 @@ const ProfilDetails = () => {
               <option value='moderator'>Moderator</option>
               {Number(user_id) === 1 ? <option value='admin'>Admin</option> : null}
             </select>
+          </div>
+          <div className='profil-details-list-item'>
+            <label>Money €</label>
+            <input maxLength={4} value={myMoney} onChange={((e) => handleMoney(e))} />
           </div>
           <button type='submit' id='submit-user-details' disabled={enableSubmit}>Submit Changes</button>
         </form>

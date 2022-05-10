@@ -26,13 +26,8 @@ class Login extends React.Component {
           const { isLoggedIn } = res.data;
           if (!isLoggedIn) alert(res.data.message);
           else {
-            const { accessToken, username, role, user_id } = res.data;
-            sessionStorage.setItem('accessToken', `Bearer ${accessToken}`)
-            sessionStorage.setItem('username', username);
-            sessionStorage.setItem('role', role);
-            sessionStorage.setItem('user_id', user_id);
-            sessionStorage.setItem('isLoggedIn', isLoggedIn);
-            this.props.logIn(username, role, user_id);
+            const { accessToken, username, role, user_id, money } = res.data;
+            this.props.logIn(username, role, user_id, money, isLoggedIn, accessToken);
           }
         })
         .catch((err) => {

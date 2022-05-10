@@ -7,7 +7,7 @@ import axios from 'axios';
 const CartProduct = ({ targetDate, name, quantity, price, product_id, shop_id }) => {
   const navigate = useNavigate();
   const context = useContext(AppContext);
-  const { user_id } = context;
+  const { user: { user_id } } = context;
 
   const deleteFromCart = (e) => {
     if (window.confirm('Are you sure to delete this product ?')) {

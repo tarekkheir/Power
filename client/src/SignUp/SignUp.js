@@ -27,15 +27,10 @@ class SingUp extends React.Component {
       await axios.post('http://localhost:8080/signup', { username: username, password: password, role: role, email: email })
         .then((res) => {
           const { isLoggedIn } = res.data;
-          console.log(res.data);
           if (!isLoggedIn) alert(res.data.message);
           else {
-            const { accessToken, username, role, user_id } = res.data;
-            sessionStorage.setItem('accessToken', 'Bearer ' + accessToken)
-            sessionStorage.setItem('username', username);
-            sessionStorage.setItem('role', role);
-            sessionStorage.setItem('user_id', user_id);
-            this.props.logIn(username, role, user_id);
+            const { accessToken, username, role, user_id, money } = res.data;
+            this.props.logIn(username, role, user_id, money, isLoggedIn, accessToken);
           }
         })
         .catch((err) => {

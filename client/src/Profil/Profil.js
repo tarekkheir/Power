@@ -12,7 +12,7 @@ import cart from '../images/cart.png';
 const Profil = () => {
   const context = useContext(AppContext);
   const navigate = useNavigate();
-  const { username, user_id, role } = context;
+  const { user: { username, user_id, role } } = context;
   const [shop, setShop] = useState([]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Profil = () => {
       </div>
       <div className='list-container'>
         <ul className='profil-list'>
-          <li className='list-item' onClick={() => navigate('/profil/profil_details', { state: { username: username, role: role } })}>
+          <li className='list-item' onClick={() => navigate('/profil/profil_details')}>
             <img src={user} height='50' width='50' alt='user' />
             <h2>Profil</h2>
             <p>Modify your profil details</p>

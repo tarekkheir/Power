@@ -13,7 +13,7 @@ const ProfilShop = () => {
   const [closeHour, setCloseHour] = useState('');
   const [enableSubmit, setEnableSubmit] = useState(true);
   const context = useContext(AppContext);
-  const { user_id, username } = context;
+  const { user: { user_id, username } } = context;
   const [shop, setShop] = useState([]);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();

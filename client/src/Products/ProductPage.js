@@ -5,14 +5,14 @@ import AppContext from '../App/AppContext';
 import './ProductPage.css';
 
 const Product = () => {
+  const context = useContext(AppContext);
+  const { user: { user_id } } = context;
   const location = useLocation();
   const { product_id } = location.state;
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(true);
-  const context = useContext(AppContext);
-  const { user_id } = context;
-  const navigate = useNavigate();
   const [product, setProduct] = useState({ name: '', price: 0, quantity: 0, shop_id: 0 })
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Product = () => {
     const THIRTY_MINUTES_IN_MS = 30 * 60 * 1000;
     const NOW_IN_MS = new Date().getTime();
     const targetDate = NOW_IN_MS + THIRTY_MINUTES_IN_MS;
-    console.log(product);
+    console.log('user_id: ', user_id);
 
     axios.post('http://localhost:8080/add_to_cart', {
       name: product.name,

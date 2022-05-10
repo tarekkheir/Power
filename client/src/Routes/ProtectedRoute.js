@@ -1,8 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = () => {
-  console.log('enter to protected route');
+const ProtectedRoute = ({ isLoggedIn }) => {
   const session_isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
   if (!session_isLoggedIn) {
