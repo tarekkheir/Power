@@ -1,7 +1,6 @@
 const { Product } = require('../models/product.model');
 const { Shop } = require('../models/shop.model');
 const { Op } = require('sequelize');
-const { Tunnel } = require('request/lib/tunnel');
 require('dotenv').config();
 
 
@@ -119,11 +118,11 @@ const shopController = {
         }
         );
       })
-      return res.status(200).send(data);
+      return res.status(200).send({ data, success: true });
     }).catch((err) => {
       console.log('error on finding shop');
       console.log(err);
-      return res.status(501).send({ message: 'error on finding shop' });
+      return res.status(501).send({ message: 'error on finding shop', success: true });
     });
   },
 

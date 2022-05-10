@@ -17,7 +17,12 @@ const User = db.sequelize.define('user', {
   role: {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
-  }
+  },
+  money: {
+    type: Sequelize.DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+    defaultValue: 1000
+  },
 });
 
 const ROLES = ['user', 'moderator'];

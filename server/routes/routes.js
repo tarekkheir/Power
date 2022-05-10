@@ -12,6 +12,7 @@ const router = express.Router();
 router.post('/signup', usersController.signUp);
 router.post('/login', usersController.login);
 router.post('/update_user_details', authUser, usersController.update_user_details);
+router.get('/user_details', authUser, usersController.get_user_details);
 // Shop routes
 router.post('/add_shop', authModerator, shopController.add_shop);
 router.post('/delete_shop', authModerator, shopController.delete_shop);
@@ -28,6 +29,7 @@ router.get('/product/:id', productController.get_product_by_id);
 // Cart routes
 router.post('/add_to_cart', sessionController.add_to_cart);
 router.post('/delete_from_cart', sessionController.delete_from_cart);
+router.post('/buy_cart', sessionController.buy_cart);
 router.get('/mycart/:id', sessionController.get_my_cart);
 
 
