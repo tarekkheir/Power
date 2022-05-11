@@ -49,7 +49,7 @@ const Profil = () => {
             <h2>Profil</h2>
             <p>Modify your profil details</p>
           </li>
-          <li className='list-item' onClick={() => navigate('/')}>
+          <li className='list-item' onClick={() => navigate('/profil/historic')}>
             <img src={historical} height='50' width='50' alt='historic' />
             <h2>Historical</h2>
             <p>Follow my current and past transaction</p>

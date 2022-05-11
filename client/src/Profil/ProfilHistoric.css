@@ -1,0 +1,15 @@
+.historic {
+    margin: 5rem auto;
+    max-width: 65%;
+}
+
+.historic-list {
+    margin: 5rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+#no-historic {
+    margin-top: 5rem;
+}

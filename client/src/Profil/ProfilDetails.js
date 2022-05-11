@@ -7,7 +7,7 @@ import './ProfilDetails.css';
 
 const ProfilDetails = () => {
   const context = useContext(AppContext);
-  const { user: { user_id, username, role, money }, update_details } = context;
+  const { user: { user_id, username, role, money }, logIn } = context;
   const [myRole, setMyRole] = useState(role);
   const [myUsername, setMyUsername] = useState(username);
   const [myMoney, setMyMoney] = useState(money);
@@ -22,9 +22,10 @@ const ProfilDetails = () => {
     axios.post('http://localhost:8080/update_user_details', { username: myUsername, role: myRole, money: myMoney }, { headers: headers })
       .then((user) => {
         if (user.data.success) {
-          const { role, username, money, accessToken } = user.data;
-          sessionStorage.setItem('accessToken', `Bearer ${accessToken}`);
-          update_details(role, username, money);
+          const { role, username, money, accessToken, isLoggedIn, user_id } = user.data;
+          // sessionStorage.setItem('accessToken', `Bearer ${accessToken}`);
+          // update_details(role, username, money, isLoggedIn, user_id);
+          logIn(username, role, user_id, money, isLoggedIn, accessToken);
           alert('Updates done successfully !');
           navigate('/profil');
         } else alert(user.data.message);

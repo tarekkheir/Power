@@ -175,8 +175,8 @@ const ProfilShop = () => {
               <div className='myshop-list-item'>
                 <label>Type of shop</label>
                 <select value={type} onChange={(e) => typeChange(e)}>
-                  <option value='fast food'>Fast Food</option>
-                  <option value='good food'>Good Food</option>
+                  <option value='Fast Food'>Fast Food</option>
+                  <option value='Good Food'>Good Food</option>
                 </select>
               </div>
               <button type='submit' disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>

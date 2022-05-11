@@ -65,17 +65,20 @@ const Cart = () => {
         <img src={profil} height='70' width='70' alt='profil' />
         <h1>{username}</h1>
       </div>
-      <h2 id='my-cart-text'>My Cart</h2>
-      <h3>Money: {money} €</h3>
-      <ul className='list-cart'>
-        {products.length > 0 ? (
-          products.map((product) => {
-            const { expire_date, name, quantity, price, product_id, shop_id } = product;
-            return <CartProduct key={expire_date} targetDate={expire_date} name={name} quantity={quantity} price={price} product_id={product_id} shop_id={shop_id} />
-          })
-        ) : <h2>No products in your Cart...</h2>}
-      </ul>
-      <button disabled={totalPrice > 0 ? false : true} id='buy_item' onClick={(e) => buyItem(e)}>Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €</button>
+      <div className='cart-container'>
+        <h3 id='money-cart'>Money available:&nbsp;&nbsp; <span id='span-money'>{money} €</span></h3>
+        <div className='cart-details'>
+          <ul className='list-cart'>
+            {products.length > 0 ? (
+              products.map((product) => {
+                const { expire_date, name, quantity, price, product_id, shop_id } = product;
+                return <CartProduct key={expire_date} targetDate={expire_date} name={name} quantity={quantity} price={price} product_id={product_id} shop_id={shop_id} />
+              })
+            ) : <h2>No products in your Cart...</h2>}
+          </ul>
+          <button disabled={totalPrice > 0 ? false : true} id='buy_item' onClick={(e) => buyItem(e)}>Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €</button>
+        </div>
+      </div>
     </div >
   );
 };

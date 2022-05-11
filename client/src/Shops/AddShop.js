@@ -94,9 +94,9 @@ const AddShop = () => {
             min="00:00" max="23:59" required onChange={(e) => closeHourChange(e)} />
         </div>
         <label>Type of shop</label>
-        <select value='fast food' onChange={(e) => typeChange(e)}>
-          <option value='fast food'>Fast Food</option>
-          <option value='good food'>Good Food</option>
+        <select value='Fast Food' onChange={(e) => typeChange(e)}>
+          <option value='Fast Food'>Fast Food</option>
+          <option value='Good Food'>Good Food</option>
         </select>
         <button disabled={enableSubmit} >Submit</button>
       </form>

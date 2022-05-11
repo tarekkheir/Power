@@ -17,6 +17,7 @@ import AddProduct from '../Products/AddProduct';
 import ProfilProduct from '../Profil/ProfilProduct';
 import Cart from '../Cart/Cart';
 import axios from 'axios';
+import ProfilHistoric from '../Profil/ProfilHistoric';
 
 
 const App = () => {
@@ -73,7 +74,7 @@ const App = () => {
 
 
   return (
-    <AppContext.Provider value={{ user, update_details }}>
+    <AppContext.Provider value={{ user, update_details, logIn }}>
       <div className="App">
         <BrowserRouter>
           <NavBar logOut={logOut} />
@@ -85,6 +86,7 @@ const App = () => {
               <Route path='/profil' element={<Profil />} />
               <Route path='/profil/myshop' element={<ProfilShop />} />
               <Route path='/profil/profil_details' element={<ProfilDetails />} />
+              <Route path='/profil/historic' element={<ProfilHistoric />} />
               <Route path='/profil/myshop/add_shop' element={<AddShop />} />
               <Route path='/profil/myshop/add_product' element={<AddProduct />} />
               <Route path='/profil/myshop/product_details/:id' element={<ProfilProduct />} />
