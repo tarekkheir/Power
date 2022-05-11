@@ -5,3 +5,29 @@
     gap: 2rem 0;
     margin: 10rem auto;
 }
+
+.filter-bar {
+    max-width: 65%;
+    margin: 5rem auto;
+    display: grid;
+    grid-template-columns: 270px 270px 270px;
+}
+
+#select-option {
+    max-width: 120px;
+}
+
+.range-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.min-max {
+    text-align: center;
+    margin: auto;
+}
+
+.filter-bar-item {
+    box-shadow: -1px 0px 0px 0px rgba(0, 0, 0, 0.213);
+    padding: 0.2rem 0.7rem;
+}

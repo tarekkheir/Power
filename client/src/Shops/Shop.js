@@ -11,7 +11,7 @@ const Shop = () => {
 
   return (
     <div className='shop'>
-      <h1>{shop_name}</h1>
+      <h1 id='shop-name'>{shop_name}</h1>
       <ProductList shop_id={id} />
     </div>
   );

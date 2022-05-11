@@ -1,4 +1,7 @@
 .home {
-    text-align: center;
     margin-top: 5rem;
+}
+
+#home-shops {
+    text-align: center;
 }

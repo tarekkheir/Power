@@ -5,3 +5,8 @@
     gap: 2rem 0;
     margin: 10rem auto;
 }
+
+#type-of-shop {
+    font-size: 15px;
+    font-weight: 600;
+}
