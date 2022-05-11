@@ -2,6 +2,7 @@ const usersController = require('../controllers/usersController');
 const shopController = require('../controllers/shopController');
 const productController = require('../controllers/productController');
 const sessionController = require('../controllers/sessionController');
+const historicController = require('../controllers/historicController');
 const { authUser, authModerator, authAdmin } = require('../middlewares/authUser');
 const express = require('express');
 
@@ -31,6 +32,8 @@ router.post('/add_to_cart', sessionController.add_to_cart);
 router.post('/delete_from_cart', sessionController.delete_from_cart);
 router.post('/buy_cart', sessionController.buy_cart);
 router.get('/mycart/:id', sessionController.get_my_cart);
+// Historic routes
+router.get('/historic', authUser, historicController.get_historic);
 
 
 

@@ -187,7 +187,7 @@ const sessionController = {
                           json_products[name] = { name, product_id, shop_id, quantity, price };
                         })
 
-                        Historic.create({ products: json_products, user_id })
+                        Historic.create({ products: json_products, user_id, total: totalPrice })
                           .then((history) => {
                             if (!Object.keys(history.dataValues).length) return res.status(200).send({ message: 'Fail to create history', success: false });
                             return res.status(200).send({ message: 'History created successfully !', success: true })

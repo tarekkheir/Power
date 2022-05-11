@@ -9,6 +9,10 @@ const Historic = db.sequelize.define('historic', {
     products: {
         type: Sequelize.DataTypes.JSON,
         allowNull: false
+    },
+    total: {
+        type: Sequelize.DataTypes.DECIMAL(10, 2),
+        allowNull: false
     }
 });
 

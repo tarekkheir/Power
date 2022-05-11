@@ -122,7 +122,7 @@ const usersController = {
                       // create token
                       const payload = { username: username, role: role, id: id };
                       const accesToken = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 86400 });
-                      return res.status(200).send({ accessToken: accesToken, username: username, role: role, money: money, success: true });
+                      return res.status(200).send({ user_id: id, isLoggedIn: true, accessToken: accesToken, username: username, role: role, money: money, success: true });
                     } else return res.send({ message: 'no modifications done', success: false });
                   })
                   .catch((err) => {
