@@ -40,7 +40,7 @@ const productController = {
                 })
                   .then((product) => {
                     if (product) return res.status(200).send({ message: 'Product added successfully !', success: true });
-                    else return res.status(501).send({ message: 'fail to add product' });
+                    else return res.status(501).send({ message: 'fail to add product', success: false });
                   })
                   .catch((err) => {
                     console.log('error on product creation');
