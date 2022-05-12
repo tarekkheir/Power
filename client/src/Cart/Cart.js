@@ -10,6 +10,7 @@ const Cart = () => {
   const context = useContext(AppContext);
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const disabled = (totalPrice === 0);
   const { user: { username, user_id, money } } = context;
 
 
@@ -72,11 +73,20 @@ const Cart = () => {
             {products.length > 0 ? (
               products.map((product) => {
                 const { expire_date, name, quantity, price, product_id, shop_id } = product;
-                return <CartProduct key={expire_date} targetDate={expire_date} name={name} quantity={quantity} price={price} product_id={product_id} shop_id={shop_id} />
+                return <CartProduct
+                  key={expire_date}
+                  targetDate={expire_date}
+                  name={name}
+                  quantity={quantity}
+                  price={price}
+                  product_id={product_id}
+                  shop_id={shop_id} />
               })
             ) : <h2>No products in your Cart...</h2>}
           </ul>
-          <button disabled={totalPrice > 0 ? false : true} id='buy_item' onClick={(e) => buyItem(e)}>Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €</button>
+          <button disabled={disabled} id='buy_item' onClick={(e) => buyItem(e)}>
+            Total :&nbsp;&nbsp;&nbsp;&nbsp;{totalPrice.toFixed(2)} €
+          </button>
         </div>
       </div>
     </div >

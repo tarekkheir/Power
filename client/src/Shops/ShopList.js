@@ -33,7 +33,7 @@ const ShopList = () => {
   return (
     <div className='shops-list-container'>
       <div className='filter-bar'>
-        <div className='filter-bar-item'>
+        <div>
           <label id='type-of-shop'>Type of Shop&nbsp;&nbsp;&nbsp;</label>
           <select id='select-option' value={filter} onChange={(e) => handleFilter(e)}>
             <option value=''>--- No Filter ---</option>

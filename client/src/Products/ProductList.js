@@ -6,7 +6,7 @@ import ProductBox from './ProductBox';
 const ProductList = ({ shop_id }) => {
   const [products, setProducts] = useState([]);
   const [filterType, setFilter] = useState('');
-  const [priceRange, setPriceRange] = useState(20);
+  const [priceRange, setPriceRange] = useState(50);
 
   useEffect(() => {
     axios.get(`http://localhost:8080/shop/${shop_id}`)
@@ -44,7 +44,7 @@ const ProductList = ({ shop_id }) => {
   return (
     <div className='products-list-container'>
       <div className='filter-bar'>
-        <div className='filter-bar-item'>
+        <div>
           <label id='type-of-shop'>Type of Shop&nbsp;&nbsp;&nbsp;</label>
           <select className='select-option' value={filterType} onChange={(e) => handleFilter(e)} >
             <option value=''>--- No Filter ----</option>
@@ -64,9 +64,9 @@ const ProductList = ({ shop_id }) => {
         {products.length ? (
           products.map((product) => {
             const { name, type, quantity, price, id } = product;
-            if (filterType !== '' && filterType === type) {
+            if (filterType !== '' && filterType === type && Number(price) <= priceRange) {
               return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} />
-            } else if (filterType === '') {
+            } else if (filterType === '' && Number(price) <= priceRange) {
               return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} />
             } else return null;
           })

@@ -83,6 +83,8 @@
 
 #buy_item:disabled {
     cursor: default;
+    background-color: rgba(128, 128, 128, 0.245);
+    color: rgba(0, 0, 0, 0.404);
 }
 
 #money-cart {

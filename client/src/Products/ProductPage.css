@@ -6,7 +6,8 @@
     margin: 10rem auto;
     max-width: 50%;
     gap: 3rem;
-    max-height: 200px;
+    padding-bottom: 5rem;
+    box-shadow: 0 4px 1px -2px rgba(0, 0, 0, 0.138);
 }
 
 .product-image {
@@ -54,4 +55,149 @@
     cursor: pointer;
     background-color: #2ea44f;
     color: white;
+}
+
+.shop-comments {
+    display: grid;
+    max-width: 35%;
+    margin-left: 25%;
+}
+
+#comment-area {
+    height: 100px;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-style: groove;
+    border-width: 5px;
+    font-size: 15px;
+}
+
+#leave-comment {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#submit-comment-button {
+    width: 120px;
+    margin-top: 1rem;
+    background-color: #2ea44f;
+    border-style: none;
+    padding: 0.2rem;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.273);
+}
+
+#comment-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.comment-list {
+    max-width: 50%;
+    margin: auto;
+    padding: 2rem;
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 5rem;
+}
+
+.comment-list-item {
+    max-width: 600px;
+    padding: 1rem;
+    box-shadow: rgba(26, 26, 26, 0.08) 0px -1px 4px 0px, rgba(26, 26, 26, 0.12) 0px 4px 8px 0px;
+}
+
+.comment-header {
+    display: grid;
+    grid-template-columns: 50px 100px 1fr;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.comment-body-text {
+    font-size: 20px;
+}
+
+#comment-body-text {
+    margin: auto 1rem;
+}
+
+#comment-header-user {
+    display: grid;
+}
+
+#comment-header-user h3 {
+    margin: 0.7rem 0 0 0;
+}
+
+#hours-ago {
+    opacity: 0.5;
+}
+
+.heart {
+    text-align: end;
+    margin: auto 0;
+}
+
+#heart {
+    cursor: pointer;
+}
+
+#heart:active {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+#laquo {
+    font-size: 30px;
+}
+
+#raquo {
+    font-size: 30px;
+    text-align: end;
+}
+
+.submit-delete-comment {
+    text-align: end;
+}
+
+#submit-delete-comment {
+    height: 20px;
+    width: 70px;
+    margin: auto;
+    font-size: 12px;
+    border-radius: 10px;
+    background-color: rgba(196, 2, 2, 0.848);
+    color: white;
+    cursor: pointer;
+    border-style: none;
 }
