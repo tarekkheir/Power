@@ -6,6 +6,19 @@ const historicController = require('../controllers/historicController');
 const productCommentController = require('../controllers/productCommentController');
 const { authUser, authModerator, authAdmin } = require('../middlewares/authUser');
 const express = require('express');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '/home/ubuntu/projets_perso/Power/server/products-Images')
+  },
+  filename: (req, file, cb) => {
+    const { boss_id } = req.body
+    cb(null, `${file.originalname}-${boss_id}`)
+  },
+})
+
+const upload = multer({ storage: storage });
 
 
 // Router
@@ -23,7 +36,7 @@ router.get('/shops', shopController.get_all_shop_details);
 router.get('/shop/:id', shopController.get_shop_by_id);
 router.get('/myshop/:id', shopController.get_shop_details);
 // Products routes
-router.post('/add_product', authModerator, productController.add_product);
+router.post('/add_product', authModerator, upload.single('file'), productController.add_product);
 router.post('/delete_product', authModerator, productController.delete_product);
 router.post('/update_product', authModerator, productController.update_product);
 router.get('/shop_products/:id', authUser, productController.get_shop_products);
@@ -42,14 +55,14 @@ router.get('/get_all_comments/:id', authUser, productCommentController.get_all_c
 
 
 router.get('/home', authUser, (req, res) => {
-    console.log(req.body);
-    return res.send({ 'OK': 'This is the home page !' });
+  console.log(req.body);
+  return res.send({ 'OK': 'This is the home page !' });
 });
 router.get('/moderator', authModerator, (req, res) => {
-    return res.send({ 'OK': 'This is the moderator page' });
+  return res.send({ 'OK': 'This is the moderator page' });
 });
 router.get('/admin', authAdmin, (req, res) => {
-    return res.send({ 'OK': 'This is the admin page' });
+  return res.send({ 'OK': 'This is the admin page' });
 })
 
 module.exports = router;

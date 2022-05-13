@@ -6,12 +6,14 @@ require('dotenv').config();
 
 const productController = {
   add_product: (req, res) => {
-    if (Object.keys(req.body).length > 5) return res.status(501).send({ message: 'too much parameters', success: false });
-    const { name, price, type, boss_id, quantity } = req.body;
-    if (!name || !price || !type || !boss_id) {
-      return res.status(501).send({ message: 'missing parameters', success: false });
-    }
-    console.log(boss_id);
+    console.log(req.file);
+    // if (Object.keys(req.body).length > 7) return res.status(501).send({ message: 'too much parameters', success: false });
+    // const { name, price, type, boss_id, quantity, file, description } = req.body;
+    // if (!name || !price || !type || !boss_id || !description || !file) {
+    //   return res.status(501).send({ message: 'missing parameters', success: false });
+    // }
+
+    return res.json({ message: "Test upload" });
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
