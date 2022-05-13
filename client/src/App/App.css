@@ -3,6 +3,18 @@
   height: 100vh;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-end {
+  text-align: end;
+}
+
+.text-align-start {
+  text-align: start;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

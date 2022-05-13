@@ -32,8 +32,7 @@ const CartProduct = ({ targetDate, name, quantity, price, product_id, shop_id })
         <button id='delete-button' onClick={(e) => deleteFromCart(e)}>X</button>
       </div>
       <div className='list-cart-item-product'>
-        <h3 id='cart-product-name' onClick={() => navigate(`/shop/${shop_id}/product/${product_id}`,
-          { state: { product_id: product_id } })}>{name} ({quantity})
+        <h3 id='cart-product-name' onClick={() => navigate(`/shop/${shop_id}/product/${product_id}`)}>{name} ({quantity})
         </h3>
       </div>
       <div className='list-cart-item-countdown'>

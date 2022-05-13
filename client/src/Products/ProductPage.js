@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AppContext from '../App/AppContext';
 import './ProductPage.css';
 import Comment from './Comment';
@@ -9,8 +9,8 @@ import Comment from './Comment';
 const Product = () => {
   const context = useContext(AppContext);
   const { user: { user_id, username } } = context;
-  const location = useLocation();
-  const { product_id } = location.state;
+  const params = useParams();
+  const { id } = params;
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [product, setProduct] = useState({ name: '', price: 0, quantity: 0, shop_id: 0 })
@@ -26,7 +26,7 @@ const Product = () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
 
-    axios.get(`http://localhost:8080/product/${product_id}`, { headers: headers })
+    axios.get(`http://localhost:8080/product/${id}`, { headers: headers })
       .then((product) => {
         if (product.data.success) {
           const { name, price, quantity, shop_id } = product.data;
@@ -37,7 +37,7 @@ const Product = () => {
         console.log('error on axios get product: ', err);
       })
 
-    axios.get(`http://localhost:8080/get_all_comments/${product_id}`, { headers: headers })
+    axios.get(`http://localhost:8080/get_all_comments/${id}`, { headers: headers })
       .then((comments) => {
         if (comments.data.success) {
           const data = [];
@@ -55,7 +55,7 @@ const Product = () => {
         console.log('error on axios get comments: ', err);
       })
 
-  }, [product_id, count, setDisabled]);
+  }, [id, count, setDisabled]);
 
 
   console.log('allComments', allComments);
@@ -70,7 +70,7 @@ const Product = () => {
     axios.post('http://localhost:8080/add_to_cart', {
       name: product.name,
       quantity: count,
-      product_id: product_id,
+      product_id: id,
       shop_id: product.shop_id,
       user_id: user_id,
       expire_date: targetDate,
@@ -109,7 +109,7 @@ const Product = () => {
       axios.post('http://localhost:8080/add_comment',
         {
           username: username,
-          product_id: product_id,
+          product_id: id,
           shop_id: product.shop_id,
           comment: comment
         }, { headers: headers })
