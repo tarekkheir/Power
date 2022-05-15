@@ -14,7 +14,9 @@ const ProductList = ({ shop_id }) => {
         if (res.data.success) {
           const datas = [];
           res.data.datas.map((product) => {
-            const { name, type, price, quantity, id } = product;
+            const { name, type, price, quantity, id, product_image, description } = product;
+            console.log('image: ', product_image);
+            console.log('description: ', description);
             datas.push({ name: name, price: price, quantity: quantity, type: type, id: id });
             return 1;
           });

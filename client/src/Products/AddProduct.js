@@ -23,14 +23,24 @@ const AddProduct = () => {
     const headers = { 'authorization': accessToken };
     const data = new FormData();
 
-    data.append('file', file)
+    data.append('file', file);
+    data.append('boss_id', boss_id);
+    data.append('name', name);
+    data.append('description', description);
+    data.append('price', price);
+    data.append('quantity', quantity);
+    data.append('type', type);
+
+    console.log(data);
 
     axios.post('http://localhost:8080/add_product', data, { headers })
       .then((res) => {
         console.log(res.data);
-        const { message } = res.data;
-        alert(message);
-        navigate('/profil/myshop');
+        if (res.data.success) {
+          const { message } = res.data;
+          alert(message);
+          navigate('/profil/myshop');
+        } else alert(res.data.message);
       })
       .catch((err) => {
         console.log('error on axios add shop post', err);
