@@ -25,6 +25,14 @@ const Product = db.sequelize.define('product', {
   shop_id: {
     type: Sequelize.DataTypes.INTEGER,
     allowNull: false
+  },
+  description: {
+    type: Sequelize.DataTypes.STRING,
+    allowNull: false
+  },
+  fileName: {
+    type: Sequelize.DataTypes.STRING,
+    allowNull: false
   }
 });
 

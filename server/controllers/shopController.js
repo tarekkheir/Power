@@ -1,6 +1,7 @@
 const { Product } = require('../models/product.model');
 const { Shop } = require('../models/shop.model');
 const { Op } = require('sequelize');
+const fs = require('fs');
 require('dotenv').config();
 
 
@@ -143,8 +144,19 @@ const shopController = {
           .then((products) => {
             if (!Object.keys(products).length) return res.status(200).send({ message: 'no product available for this shop' });
             products.map((product) => {
-              const { name, price, type, quantity, id, boss_id } = product.dataValues;
-              datas.push({ name, price, type, quantity, id, boss_id });
+              const { name, price, type, quantity, id, boss_id, description, fileName } = product.dataValues;
+              let product_image;
+
+              fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
+                if (err) { console.log('error on finding image: ', err) }
+                else {
+                  console.log('content image: ', content);
+                  product_image = content;
+                  res.sendFile(content);
+                };
+              })
+
+              datas.push({ name, price, type, quantity, id, boss_id, product_image, description });
             })
             return res.status(200).send({ datas, success: true });
           })

@@ -1,24 +1,26 @@
 const { Product } = require('../models/product.model');
 const { Shop } = require('../models/shop.model');
 const { Op } = require('sequelize');
+const fs = require('fs');
 require('dotenv').config();
 
 
 const productController = {
   add_product: (req, res) => {
     console.log(req.file);
-    // if (Object.keys(req.body).length > 7) return res.status(501).send({ message: 'too much parameters', success: false });
-    // const { name, price, type, boss_id, quantity, file, description } = req.body;
-    // if (!name || !price || !type || !boss_id || !description || !file) {
-    //   return res.status(501).send({ message: 'missing parameters', success: false });
-    // }
+    console.log(req.headers);
+    console.log(req.body);
+    if (Object.keys(req.body).length > 6) return res.status(200).send({ message: 'too much parameters', success: false });
+    const { name, price, type, boss_id, quantity, description } = req.body;
+    if (!name || !price || !type || !boss_id || !description) {
+      return res.status(200).send({ message: 'missing parameters', success: false });
+    }
 
-    return res.json({ message: "Test upload" });
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
         if (!Object.keys(shop).length) {
-          return res.status(501).send({ message: 'you have no shop', success: false });
+          return res.status(200).send({ message: 'you have no shop', success: false });
         } else {
           const shop_id = shop.map((s) => {
             const { id } = s.dataValues;
@@ -30,7 +32,7 @@ const productController = {
           })
             .then((product) => {
               if (Object.keys(product).length) {
-                return res.status(501).send({ message: 'product name already exist', success: false });
+                return res.status(200).send({ message: 'product name already exist', success: false });
               } else {
                 Product.create({
                   name: name,
@@ -38,35 +40,38 @@ const productController = {
                   type: type,
                   boss_id: boss_id,
                   shop_id: shop_id,
-                  quantity: quantity
+                  quantity: quantity,
+                  description: description,
+                  fileName: req.file.originalname,
                 })
                   .then((product) => {
                     if (product) return res.status(200).send({ message: 'Product added successfully !', success: true });
-                    else return res.status(501).send({ message: 'fail to add product', success: false });
+                    else return res.status(200).send({ message: 'fail to add product', success: false });
                   })
                   .catch((err) => {
                     console.log('error on product creation');
                     console.log(err);
-                    return res.status(501).send({ message: 'error on product creation', success: false });
+                    return res.status(200).send({ message: 'error on product creation', success: false });
                   })
               }
             })
             .catch((err) => {
               console.log('error on finding Product');
               console.log(err);
-              return res.status(501).send({ message: 'error on finding product', success: false });
+              return res.status(200).send({ message: 'error on finding product', success: false });
             })
         }
       })
       .catch((err) => {
         console.log('error on finding shop for adding product');
         console.log(err);
-        return res.status(501).send({ message: 'error on finding shop for adding product', success: false });
+        return res.status(200).send({ message: 'error on finding shop for adding product', success: false });
       })
 
   },
 
   delete_product: (req, res) => {
+    console.log(req.body);
     if (Object.keys(req.body).length > 2) return res.status(501).send({ message: 'too much parameters', success: false });
     const { boss_id, id } = req.body;
     if (!boss_id || !id) {
@@ -135,10 +140,15 @@ const productController = {
               if (!product) return res.status(501).send({ message: 'no product found for this shop', success: false });
               else {
                 const products = [];
-
                 product.map((p) => {
-                  const { name, price, type, quantity, id } = p.dataValues;
-                  products.push({ name, price, type, quantity, id });
+                  const { name, price, type, quantity, id, fileName, description } = p.dataValues;
+                  let product_image = null;
+
+                  fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
+                    if (err) { console.log('error on finding image: ', err) } else { product_image = content };
+                  })
+
+                  products.push({ name, price, type, quantity, id, description, product_image });
                 });
                 return res.send({ products, success: true, shop_name });
               }
@@ -160,8 +170,14 @@ const productController = {
     Product.findAll({ where: { id: id } })
       .then((product) => {
         if (!product) return res.status(200).send({ message: 'no product found for this shop', success: false });
-        const { name, price, type, quantity, id, shop_id } = product[0].dataValues;
-        return res.status(200).send({ shop_id, name, price, type, quantity, id, success: true });
+        const { name, price, type, quantity, id, shop_id, description, fileName } = product[0].dataValues;
+        let product_image = null;
+
+        fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
+          if (err) { console.log('error on finding image: ', err) } else { product_image = content };
+        })
+
+        return res.status(200).send({ shop_id, name, price, type, quantity, id, description, product_image, success: true });
       })
       .catch((err) => {
         console.log('error on finding product by id', err);

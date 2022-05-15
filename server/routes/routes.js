@@ -7,14 +7,16 @@ const productCommentController = require('../controllers/productCommentControlle
 const { authUser, authModerator, authAdmin } = require('../middlewares/authUser');
 const express = require('express');
 const multer = require('multer');
+require('dotenv').config();
+
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/home/ubuntu/projets_perso/Power/server/products-Images')
+    cb(null, process.env.DIR);
   },
   filename: (req, file, cb) => {
-    const { boss_id } = req.body
-    cb(null, `${file.originalname}-${boss_id}`)
+    cb(null, `${file.originalname}`)
   },
 })
 
