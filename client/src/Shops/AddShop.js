@@ -11,9 +11,10 @@ const AddShop = () => {
   const [openHour, setOpenHour] = useState('');
   const [closeHour, setCloseHour] = useState('');
   const [enableSubmit, setEnableSubmit] = useState(true);
+  const [file, setFile] = useState();
   const navigate = useNavigate();
   const context = useContext(AppContext);
-  const boss_id = context.id;
+  const boss_id = context.user.user_id;
 
 
   const postShop = (e) => {
@@ -21,7 +22,16 @@ const AddShop = () => {
     const open_hours = `${openHour} - ${closeHour}`;
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
-    axios.post('http://localhost:8080/add_shop', { name, type, location, open_hours, boss_id }, { headers })
+    const data = new FormData();
+
+    data.append('file', file);
+    data.append('boss_id', boss_id);
+    data.append('name', name);
+    data.append('location', location);
+    data.append('open_hours', open_hours);
+    data.append('type', type);
+
+    axios.post('http://localhost:8080/add_shop', data, { headers })
       .then((res) => {
         console.log(res);
         const { message } = res.data;
@@ -36,7 +46,7 @@ const AddShop = () => {
 
   const nameChange = (e) => {
     e.preventDefault();
-    if (e.target.value && location && openHour && closeHour) {
+    if (e.target.value && location && openHour && closeHour && type && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -45,7 +55,7 @@ const AddShop = () => {
 
   const locationChange = (e) => {
     e.preventDefault();
-    if (e.target.value && name && openHour && closeHour) {
+    if (e.target.value && name && openHour && closeHour && type && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -54,7 +64,7 @@ const AddShop = () => {
 
   const typeChange = (e) => {
     e.preventDefault();
-    if (e.target.value && name && location && openHour && closeHour) {
+    if (e.target.value && name && location && openHour && closeHour && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -63,7 +73,7 @@ const AddShop = () => {
 
   const openhourChange = (e) => {
     e.preventDefault();
-    if (e.target.value && name && location && closeHour) {
+    if (e.target.value && name && location && closeHour && type && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
@@ -71,34 +81,57 @@ const AddShop = () => {
   }
 
   const closeHourChange = (e) => {
-    if (e.target.value && name && location && type && openHour) {
+    if (e.target.value && name && location && type && openHour && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
     setCloseHour(e.target.value);
   }
 
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    if (e.target.value && name && location && type && openHour && closeHour) {
+      setEnableSubmit(false);
+    } else setEnableSubmit(true);
+
+    setFile(e.target.files[0]);
+  }
+
   return (
     <div className='addshop'>
       <h1>Add Shop</h1>
       <form className='addshop-details' onSubmit={(e) => postShop(e)}>
-        <label>Shop Name</label>
-        <input type='text' onChange={(e) => nameChange(e)} />
-        <label>Location</label>
-        <input type='text' onChange={(e) => locationChange(e)} />
-        <label>Open Hours</label>
-        <div className='openhours'>
-          <input type="time" id="open" name="open"
-            min="00:00" max="23:59" required onChange={(e) => openhourChange(e)} />
-          <input type="time" id="close" name="close"
-            min="00:00" max="23:59" required onChange={(e) => closeHourChange(e)} />
+        <div className='addshop-details-item'>
+          <label className='addshop-details-item-label text-align-start'>Shop Name</label>
+          <input className='addshop-details-item-input' type='text' onChange={(e) => nameChange(e)} />
         </div>
-        <label>Type of shop</label>
-        <select value='Fast Food' onChange={(e) => typeChange(e)}>
-          <option value='Fast Food'>Fast Food</option>
-          <option value='Good Food'>Good Food</option>
-        </select>
-        <button disabled={enableSubmit} >Submit</button>
+        <div className='addshop-details-item'>
+          <label className='addshop-details-item-label text-align-start'>Location</label>
+          <input className='addshop-details-item-input' type='text' onChange={(e) => locationChange(e)} />
+        </div>
+        <div className='addshop-details-item-triple'>
+          <div className='add-hours'>
+            <label className='addshop-details-item-label text-align-center'>Open Hours</label>
+            <div className='openhours'>
+              <input className='addshop-details-item-input-hours' type="time" id="open" name="open"
+                min="00:00" max="23:59" required onChange={(e) => openhourChange(e)} />
+              <input className='addshop-details-item-input-hours' type="time" id="close" name="close"
+                min="00:00" max="23:59" required onChange={(e) => closeHourChange(e)} />
+            </div>
+          </div>
+          <div className='upload-picture text-align-center shadow-left'>
+            <label className='addshop-details-item-label text-align-center'>Product Image</label>
+            <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+          </div>
+          <div className='upload-picture shadow-left'>
+            <label className='addshop-details-item-label text-align-center'>Type of shop</label>
+            <select className='addshop-details-item-select text-align-center' value={type} onChange={(e) => typeChange(e)}>
+              <option value='Fast Food'>Fast Food</option>
+              <option value='Good Food'>Good Food</option>
+            </select>
+          </div>
+        </div>
+        <button type='submit' className='addshop-details-button' disabled={enableSubmit} >ADD SHOP</button>
       </form>
     </div>
   );

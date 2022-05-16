@@ -1,10 +1,10 @@
 .shopbox {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 180px 1fr;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.238);
-    max-height: 250px;
-    min-width: 350px;
+    height: 250px;
+    width: 400px;
     cursor: pointer;
     margin: auto;
 }
@@ -18,12 +18,12 @@
 .details {
     display: grid;
     padding: 1rem;
+    gap: 0.5rem;
 }
 
 .details .name {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    text-align: center;
 }
 
 .shop-infos {

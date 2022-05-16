@@ -1,8 +1,8 @@
 .shops-list {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    max-width: 65%;
-    gap: 2rem 0;
+    max-width: 80%;
+    gap: 2rem 1rem;
     margin: 10rem auto;
 }
 

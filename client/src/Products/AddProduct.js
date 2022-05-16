@@ -98,7 +98,6 @@ const AddProduct = () => {
     if (e.target.value && name && price > 0 && type && file) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
-
     setDescription(e.target.value)
   }
 

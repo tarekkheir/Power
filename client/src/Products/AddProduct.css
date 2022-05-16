@@ -42,6 +42,7 @@
 .upload-picture {
     display: grid;
     gap: 1rem;
+    padding: 0 2rem;
 }
 
 .addshop-details-item-input {

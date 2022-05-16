@@ -7,6 +7,7 @@ const ProductList = ({ shop_id }) => {
   const [products, setProducts] = useState([]);
   const [filterType, setFilter] = useState('');
   const [priceRange, setPriceRange] = useState(50);
+  const url = 'http://localhost:8080/products_images/';
 
   useEffect(() => {
     axios.get(`http://localhost:8080/shop/${shop_id}`)
@@ -14,10 +15,9 @@ const ProductList = ({ shop_id }) => {
         if (res.data.success) {
           const datas = [];
           res.data.datas.map((product) => {
-            const { name, type, price, quantity, id, product_image, description } = product;
-            console.log('image: ', product_image);
-            console.log('description: ', description);
-            datas.push({ name: name, price: price, quantity: quantity, type: type, id: id });
+            const { name, type, price, quantity, id, fileName } = product;
+            console.log('image: ', fileName);
+            datas.push({ name, price, quantity, type, id, fileName });
             return 1;
           });
           setProducts(datas);
@@ -26,7 +26,10 @@ const ProductList = ({ shop_id }) => {
       .catch((err) => {
         console.log('axios error', err);
       })
+
   }, [shop_id]);
+
+  console.log('products: ', products);
 
 
   const handleFilter = (e) => {
@@ -65,14 +68,16 @@ const ProductList = ({ shop_id }) => {
       <div className='products-list'>
         {products.length ? (
           products.map((product) => {
-            const { name, type, quantity, price, id } = product;
+            const { name, type, quantity, price, id, fileName } = product;
+            const image = url + fileName;
+
             if (filterType !== '' && filterType === type && Number(price) <= priceRange) {
-              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} />
+              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} image={image} />
             } else if (filterType === '' && Number(price) <= priceRange) {
-              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} />
+              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} image={image} />
             } else return null;
           })
-        ) : 'shops is null'}
+        ) : <h2>No products available...</h2>}
       </div>
     </div>
   );

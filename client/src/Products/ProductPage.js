@@ -14,9 +14,10 @@ const Product = () => {
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [product, setProduct] = useState({ name: '', price: 0, quantity: 0, shop_id: 0 })
-  const [comment, setComment] = useState('How did you find this product ? ...');
+  const [comment, setComment] = useState('');
   const [allComments, setAllComments] = useState([]);
   const navigate = useNavigate();
+  const url = 'http://localhost:8080/products_images/'
 
 
   useEffect(() => {
@@ -29,8 +30,8 @@ const Product = () => {
     axios.get(`http://localhost:8080/product/${id}`, { headers: headers })
       .then((product) => {
         if (product.data.success) {
-          const { name, price, quantity, shop_id } = product.data;
-          setProduct({ name: name, price: price, quantity: quantity, shop_id: shop_id });
+          const { name, price, quantity, shop_id, description, fileName } = product.data;
+          setProduct({ name, price, quantity, shop_id, fileName, description });
         } else alert(product.data.message);
       })
       .catch((err) => {
@@ -134,15 +135,13 @@ const Product = () => {
   return (
     <div className='product-page-container'>
       <div className='productpage'>
-        <div className='product-image'>image</div>
+        <div className='product-image-container'>
+          <img className='product-image' src={url + product.fileName} alt='product' />
+        </div>
         <div className='product-description'>
           <h1>{product.name} ({product.quantity})</h1>
           <h3>Description</h3>
-          <p>Le lorem ipsum est, en imprimerie, une suite de mots sans
-            signification utilisée à titre provisoire pour calibrer
-            une mise en page, le texte définitif venant remplacer le
-            faux-texte dès qu'il est prêt ou que la mise en page est achevée.
-            Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.</p>
+          <p>{product.description}</p>
           <h4>{product.price} €</h4>
           <div className='count'>
             <button onClick={() => minus()}>-</button>
@@ -156,7 +155,7 @@ const Product = () => {
       </div >
       <form className='shop-comments' onSubmit={(e) => leaveComment(e)}>
         <label id='leave-comment'>Leave a comment</label>
-        <textarea name='comment' id='comment-area' value={comment} onChange={(e) => handleCommentChange(e)} />
+        <textarea placeholder='How did you find this product ? ...' name='comment' id='comment-area' value={comment} onChange={(e) => handleCommentChange(e)} />
         <div id='comment-button-container'>
           <button id='submit-comment-button' type='submit'>Submit</button>
         </div>

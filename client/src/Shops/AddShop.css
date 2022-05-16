@@ -25,3 +25,26 @@
     margin-left: auto;
     padding-left: 1rem;
 }
+
+.add-hours {
+    display: grid;
+    gap: 0.5rem;
+    margin: auto;
+}
+
+.addshop-details-item-triple {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.shadow-left {
+    box-shadow: -1px 0px 0px 0px rgba(0, 0, 0, 0.213);
+}
+
+.addshop-details-item-input-hours {
+    border-style: groove;
+    border-width: 3px;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 0.5rem;
+}

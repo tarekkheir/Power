@@ -82,7 +82,7 @@ const ProfilShop = () => {
       e.preventDefault();
       const accessToken = sessionStorage.getItem('accessToken');
       const headers = { 'authorization': accessToken };
-      axios.post('http://localhost:8080/delete_shop', { boss_id: user_id }, { headers: headers })
+      axios.post('http://localhost:8080/delete_shop', { boss_id: user_id, shop_id: shop.id }, { headers: headers })
         .then((shop) => {
           if (Object.keys(shop.data).length > 1) {
             if (shop.data.success) {

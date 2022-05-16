@@ -1,10 +1,42 @@
 .productbox {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    background-color: aliceblue;
+    grid-template-rows: 180px 1fr;
+    /* background-color: rgba(255, 212, 127, 0.493); */
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.238);
-    max-height: 250px;
-    max-width: 350px;
+    height: 250px;
+    width: 400px;
+    gap: 0.5rem;
+}
+
+.productbox h4 {
+    margin: 0;
+}
+
+.productbox-name {
     cursor: pointer;
+}
+
+.image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-infos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }

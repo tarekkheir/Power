@@ -6,6 +6,7 @@ import './ShopList.css';
 const ShopList = () => {
   const [shops, setShops] = useState([]);
   const [filter, setFilter] = useState('');
+  const url = 'http://localhost:8080/shops_images/';
 
   useEffect(() => {
     async function fetchData() {
@@ -45,11 +46,13 @@ const ShopList = () => {
       <div className='shops-list'>
         {shops.length ? (
           shops.map((shop) => {
-            const { name, type, location, open_hours, id, boss_id } = shop;
+            const { name, type, location, open_hours, id, boss_id, fileName } = shop;
+            const image = url + fileName;
+
             if (filter !== '' && type === filter) {
-              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} />
+              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} image={image} />
             } else if (filter === '') {
-              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} />
+              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} image={image} />
             } else return null;
           })
         ) : 'shops is null'}
