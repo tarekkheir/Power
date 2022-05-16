@@ -22,12 +22,12 @@ const ProfilProduct = () => {
     axios.get(`http://localhost:8080/product/${id}`)
       .then((product) => {
         if (product.data.success) {
-          const { name, price, type, quantity, id } = product.data;
+          const { name, price, type, quantity, id, shop_id, fileName } = product.data;
           setName(name);
           setPrice(price);
           setQuantity(quantity);
           setType(type);
-          setProduct({ name, price, type, quantity, id });
+          setProduct({ name, price, type, quantity, id, shop_id, fileName });
         } else {
           console.log(product.data.message);
           navigate('/profil');
@@ -46,7 +46,8 @@ const ProfilProduct = () => {
     axios.post('http://localhost:8080/update_product', { name, quantity, price, type, product_id }, { headers: headers })
       .then((product) => {
         console.log(product);
-        if (Object.keys(product.data).length > 1) {
+
+        if (product.data.success) {
           if (product.data.success) {
             alert(product.data.message);
             navigate('/profil/myshop');
@@ -63,7 +64,10 @@ const ProfilProduct = () => {
       e.preventDefault();
       const accessToken = sessionStorage.getItem('accessToken');
       const headers = { 'authorization': accessToken };
-      axios.post('http://localhost:8080/delete_product', { id: id, boss_id: user_id }, { headers: headers })
+
+      axios.post('http://localhost:8080/delete_product',
+        { id: id, boss_id: user_id, shop_id: product.shop_id, fileName: product.fileName },
+        { headers: headers })
         .then((product) => {
           if (product.data.success) {
             alert(product.data.message);

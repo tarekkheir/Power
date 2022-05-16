@@ -12,17 +12,19 @@ const ProfilShop = () => {
   const [openHour, setOpenHour] = useState('');
   const [closeHour, setCloseHour] = useState('');
   const [enableSubmit, setEnableSubmit] = useState(true);
-  const context = useContext(AppContext);
-  const { user: { user_id, username } } = context;
   const [shop, setShop] = useState([]);
   const [products, setProducts] = useState([]);
+  const [fileName, setFileName] = useState('');
+  const context = useContext(AppContext);
+  const { user: { user_id, username } } = context;
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:8080/myshop/${user_id}`)
       .then((shop) => {
-        if (Object.keys(shop.data).length > 1) {
-          const { name, location, open_hours, id, type } = shop.data;
+        if (shop.data.success) {
+          const { name, location, open_hours, id, type, fileName } = shop.data;
+          console.log(open_hours);
           const hours = open_hours.split(' - ');
           const open = hours[0];
           const close = hours[1];
@@ -32,14 +34,15 @@ const ProfilShop = () => {
           setLocation(location);
           setOpenHour(open);
           setCloseHour(close);
+          setFileName(fileName);
 
           axios.get(`http://localhost:8080/shop/${id}`)
             .then((products) => {
               if (products.data.success) {
                 const productsDatas = [];
                 products.data.datas.map((product) => {
-                  const { name, type, price, quantity, id, boss_id } = product;
-                  productsDatas.push({ name: name, type: type, quantity: quantity, id: id, boss_id: boss_id, price: price });
+                  const { name, type, price, quantity, id, boss_id, fileName } = product;
+                  productsDatas.push({ name, type, quantity, id, boss_id, price, fileName });
                   return 1;
                 })
                 setProducts(productsDatas);
@@ -63,7 +66,8 @@ const ProfilShop = () => {
     const open_hours = openHour + ' - ' + closeHour;
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
-    axios.post('http://localhost:8080/update_shop_details', { name, location, type, open_hours }, { headers: headers })
+
+    axios.post('http://localhost:8080/update_shop_details', { name, location, type, open_hours, newFileName: fileName }, { headers: headers })
       .then((shop) => {
         if (Object.keys(shop.data).length > 1) {
           if (shop.data.success) {
@@ -82,20 +86,17 @@ const ProfilShop = () => {
       e.preventDefault();
       const accessToken = sessionStorage.getItem('accessToken');
       const headers = { 'authorization': accessToken };
-      axios.post('http://localhost:8080/delete_shop', { boss_id: user_id, shop_id: shop.id }, { headers: headers })
+
+      axios.post('http://localhost:8080/delete_shop', { boss_id: user_id, shop_id: shop.id, products: products, fileName }, { headers: headers })
         .then((shop) => {
-          if (Object.keys(shop.data).length > 1) {
-            if (shop.data.success) {
-              alert(shop.data.message);
-              window.location.reload();
-            } else alert('delete didn\'t success...');
+          if (shop.data.success) {
+            alert(shop.data.message);
+            window.location.reload();
           } else alert(shop.data.message);
         })
         .catch((err) => {
           console.log('error on axios delete: ', err);
         })
-    } else {
-      console.log('no he love he\'s shop');
     }
   }
 
@@ -144,6 +145,15 @@ const ProfilShop = () => {
     setCloseHour(e.target.value);
   }
 
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    if (e.target.files[0].name !== fileName && name && location && type && openHour && closeHour) {
+      setEnableSubmit(false);
+    } else setEnableSubmit(true);
+
+    setFileName(e.target.files[0]);
+  }
+
   return (
     <div className='profil-shop'>
       <div className='profil-name'>
@@ -178,6 +188,10 @@ const ProfilShop = () => {
                   <option value='Fast Food'>Fast Food</option>
                   <option value='Good Food'>Good Food</option>
                 </select>
+              </div>
+              <div className='myshop-list-item'>
+                <label>Shop image</label>
+                <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
               </div>
               <button type='submit' disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>
             </form>
