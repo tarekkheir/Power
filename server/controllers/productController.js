@@ -1,5 +1,6 @@
 const { Product } = require('../models/product.model');
 const { Shop } = require('../models/shop.model');
+const { ProductComment } = require('../models/productComment.model');
 const { Op } = require('sequelize');
 const fs = require('fs');
 require('dotenv').config();
@@ -72,9 +73,9 @@ const productController = {
 
   delete_product: (req, res) => {
     console.log(req.body);
-    if (Object.keys(req.body).length > 2) return res.status(501).send({ message: 'too much parameters', success: false });
-    const { boss_id, id } = req.body;
-    if (!boss_id || !id) {
+    if (Object.keys(req.body).length > 4) return res.status(501).send({ message: 'too much parameters', success: false });
+    const { boss_id, id, shop_id, fileName } = req.body;
+    if (!boss_id || !id || !shop_id || !fileName) {
       return res.status(501).send({ message: 'missing parameters', success: false });
     }
 
@@ -82,15 +83,36 @@ const productController = {
       .then((product) => {
         if (product) {
           console.log('product deleted');
-          return res.status(200).send({ message: 'Product deleted successfully !', success: true });
+
+          ProductComment.destroy({ where: { shop_id: shop_id } })
+            .then((comment) => {
+              if (comment) {
+                console.log('comments deleted');
+
+                const product_image = process.env.DIR_PRODUCTS + fileName;
+
+                fs.unlink(product_image, (err) => {
+                  if (err) {
+                    console.log('error on product image delete: ', err)
+                    return res.status(200).send({ message: 'error on product image delete', success: false });
+                  } else console.log('product image deleted: ', product_image);
+                });
+
+                return res.status(200).send({ message: 'Product deleted successfully !', success: true });
+              } else return res.status(200).send({ message: 'no comment to delete', success: false });
+            })
+            .catch((err) => {
+              console.log('error on comment deleted', err);
+              return res.status(200).send({ message: 'error on comment deleted', success: false });
+            })
+
         } else {
           console.log('no product to delete');
           return res.status(200).send({ message: 'no product to delete', success: false });
         }
       })
       .catch((err) => {
-        console.log('error on product delete');
-        console.log((err));
+        console.log('error on product delete', err);
         return res.status(200).send({ message: 'error on product delete', success: false })
       })
 

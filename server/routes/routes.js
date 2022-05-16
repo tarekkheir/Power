@@ -44,7 +44,7 @@ router.get('/user_details', authUser, usersController.get_user_details);
 // Shop routes
 router.post('/add_shop', authModerator, upload_shop.single('file'), shopController.add_shop);
 router.post('/delete_shop', authModerator, shopController.delete_shop);
-router.post('/update_shop_details', authModerator, shopController.update_shop_details);
+router.post('/update_shop_details', authModerator, upload_shop.single('file'), shopController.update_shop_details);
 router.get('/shops', shopController.get_all_shop_details);
 router.get('/shop/:id', shopController.get_shop_by_id);
 router.get('/myshop/:id', shopController.get_shop_details);
