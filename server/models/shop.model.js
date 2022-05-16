@@ -22,6 +22,10 @@ const Shop = db.sequelize.define('shop', {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
   },
+  fileName: {
+    type: Sequelize.DataTypes.STRING,
+    allowNull: false
+  }
 });
 
 

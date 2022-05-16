@@ -141,12 +141,7 @@ const productController = {
               else {
                 const products = [];
                 product.map((p) => {
-                  const { name, price, type, quantity, id, fileName, description } = p.dataValues;
-                  let product_image = null;
-
-                  fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
-                    if (err) { console.log('error on finding image: ', err) } else { product_image = content };
-                  })
+                  const { name, price, type, quantity, id, description } = p.dataValues;
 
                   products.push({ name, price, type, quantity, id, description, product_image });
                 });
@@ -171,13 +166,8 @@ const productController = {
       .then((product) => {
         if (!product) return res.status(200).send({ message: 'no product found for this shop', success: false });
         const { name, price, type, quantity, id, shop_id, description, fileName } = product[0].dataValues;
-        let product_image = null;
 
-        fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
-          if (err) { console.log('error on finding image: ', err) } else { product_image = content };
-        })
-
-        return res.status(200).send({ shop_id, name, price, type, quantity, id, description, product_image, success: true });
+        return res.status(200).send({ shop_id, name, price, type, quantity, id, description, fileName, success: true });
       })
       .catch((err) => {
         console.log('error on finding product by id', err);

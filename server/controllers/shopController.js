@@ -7,6 +7,9 @@ require('dotenv').config();
 
 const shopController = {
   add_shop: (req, res) => {
+    console.log(req.file);
+    console.log(req.headers);
+    console.log(req.body);
     if (Object.keys(req.body).length > 5) return res.send({ message: 'too much parameters' });
     const { name, boss_id, location, type, open_hours } = req.body;
     console.log(req.body);
@@ -16,13 +19,13 @@ const shopController = {
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
-        if (Object.keys(shop).length && boss_id !== 1) {
+        if (Object.keys(shop).length) {
           console.log('Boss id already used !');
           return res.status(200).send({ message: 'You have already one shop registered !' });
         } else {
           Shop.findAll({ where: { name: name } })
             .then((shop) => {
-              if (Object.keys(shop).length && boss_id !== 1) {
+              if (Object.keys(shop).length) {
                 console.log('Name already used !');
                 return res.status(200).send({ message: 'Name already used !' });
               } else {
@@ -31,7 +34,8 @@ const shopController = {
                   location: location,
                   boss_id: boss_id,
                   type: type,
-                  open_hours: open_hours
+                  open_hours: open_hours,
+                  fileName: req.file.originalname
                 })
                   .then((shop) => {
                     console.log('Shop added !');
@@ -52,9 +56,9 @@ const shopController = {
   },
 
   delete_shop: (req, res) => {
-    if (Object.keys(req.body).length > 1) return res.status(501).send({ message: 'too much parameters' });
-    const { boss_id } = req.body;
-    if (!boss_id) {
+    if (Object.keys(req.body).length > 2) return res.status(501).send({ message: 'too much parameters' });
+    const { boss_id, shop_id } = req.body;
+    if (!boss_id || !shop_id) {
       return res.status(200).send({ message: 'missing parameters' });
     }
 
@@ -62,7 +66,22 @@ const shopController = {
       .then((shop) => {
         if (shop) {
           console.log('Shop deleted !', shop);
-          return res.status(200).send({ message: 'Shop was successfully deleted !', success: true });
+
+          Product.destroy({ where: { boss_id: boss_id } })
+            .then((product) => {
+              if (product) {
+                console.log('Products deleted: ', product);
+                return res.status(200).send({ message: 'Shop was successfully deleted !', success: true });
+              } else {
+                console.log('No products deleted', shop);
+                return res.status(200).send({ message: 'no products deleted' });
+              }
+            })
+            .catch((err) => {
+              console.log('error on product destroy: ', err);
+              return res.status(200).send({ message: 'error on product destroy' });
+            })
+
         } else {
           console.log('No shop to delete', shop);
           return res.status(200).send({ message: 'no shop to delete' });
@@ -108,14 +127,15 @@ const shopController = {
     Shop.findAll().then((shops) => {
       data = [];
       shops.map((shop) => {
-        const { name, location, open_hours, type, id, boss_id } = shop.dataValues;
+        const { name, location, open_hours, type, id, boss_id, fileName } = shop.dataValues;
         data.push({
           name: name,
           location: location,
           open_hours: open_hours,
           type: type,
           id: id,
-          boss_id: boss_id
+          boss_id: boss_id,
+          fileName: fileName
         }
         );
       })
@@ -144,19 +164,8 @@ const shopController = {
           .then((products) => {
             if (!Object.keys(products).length) return res.status(200).send({ message: 'no product available for this shop' });
             products.map((product) => {
-              const { name, price, type, quantity, id, boss_id, description, fileName } = product.dataValues;
-              let product_image;
-
-              fs.readFile(process.env.DIR + `/${fileName}`, (err, content) => {
-                if (err) { console.log('error on finding image: ', err) }
-                else {
-                  console.log('content image: ', content);
-                  product_image = content;
-                  res.sendFile(content);
-                };
-              })
-
-              datas.push({ name, price, type, quantity, id, boss_id, product_image, description });
+              const { name, price, type, quantity, id, boss_id, fileName } = product.dataValues;
+              datas.push({ name, price, type, quantity, id, boss_id, fileName });
             })
             return res.status(200).send({ datas, success: true });
           })
@@ -179,14 +188,15 @@ const shopController = {
     Shop.findAll({ where: { boss_id: id } })
       .then((shop) => {
         if (Object.keys(shop).length) {
-          const { name, location, open_hours, type, id, boss_id } = shop[0].dataValues;
+          const { name, location, open_hours, type, id, boss_id, fileName } = shop[0].dataValues;
           return res.status(200).send({
             name: name,
             location: location,
             open_hours: open_hours,
             type: type,
             id: id,
-            boss_id: boss_id
+            boss_id: boss_id,
+            fileName: fileName
           });
         } else return res.status(200).send({ message: 'no shop find for this id' });
       }).catch((err) => {

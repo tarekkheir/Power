@@ -11,6 +11,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Image load
+app.use(express.static('public'));
+
 // Launch server
 app.listen(8080, () => {
     console.log('Server running on 8080 !');
