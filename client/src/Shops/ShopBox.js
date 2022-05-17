@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ShopBox = ({ ...props }) => {
   const navigate = useNavigate();
-  const { name, location, shop_id, image } = props;
+  const { name, location, shop_id, image, open_hours } = props;
 
   return (
     <div className='shopbox' onClick={() => navigate(`/shop/${shop_id}`, { state: { shop_name: name } })}>
@@ -18,6 +18,7 @@ const ShopBox = ({ ...props }) => {
         </div>
         <ul className='shop-infos'>
           <li className='text-align-start'>{location}</li>
+          <li className='text-align-end'><span>{open_hours}</span></li>
         </ul>
       </div>
     </div>

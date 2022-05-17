@@ -15,6 +15,7 @@ const ProfilShop = () => {
   const [shop, setShop] = useState([]);
   const [products, setProducts] = useState([]);
   const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState(null);
   const context = useContext(AppContext);
   const { user: { user_id, username } } = context;
   const navigate = useNavigate();
@@ -67,9 +68,18 @@ const ProfilShop = () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
 
-    axios.post('http://localhost:8080/update_shop_details', { name, location, type, open_hours, newFileName: fileName }, { headers: headers })
+    const data = new FormData();
+
+    data.append('file', file);
+    data.append('name', name);
+    data.append('location', location);
+    data.append('type', type);
+    data.append('open_hours', open_hours);
+    data.append('boss_id', user_id);
+
+    axios.post('http://localhost:8080/update_shop_details', data, { headers: headers })
       .then((shop) => {
-        if (Object.keys(shop.data).length > 1) {
+        if (shop.data.success) {
           if (shop.data.success) {
             alert(shop.data.message);
             window.location.reload();
@@ -151,7 +161,8 @@ const ProfilShop = () => {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
-    setFileName(e.target.files[0]);
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name)
   }
 
   return (
@@ -191,6 +202,7 @@ const ProfilShop = () => {
               </div>
               <div className='myshop-list-item'>
                 <label>Shop image</label>
+                <span>{fileName}</span>
                 <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
               </div>
               <button type='submit' disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>

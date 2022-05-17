@@ -120,7 +120,7 @@ const AddShop = () => {
             </div>
           </div>
           <div className='upload-picture text-align-center shadow-left'>
-            <label className='addshop-details-item-label text-align-center'>Product Image</label>
+            <label className='addshop-details-item-label text-align-center'>Shop Image</label>
             <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
           </div>
           <div className='upload-picture shadow-left'>

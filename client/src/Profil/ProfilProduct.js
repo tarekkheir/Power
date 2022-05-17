@@ -9,25 +9,30 @@ const ProfilProduct = () => {
   const params = useParams();
   const { id } = params;
   const context = useContext(AppContext);
-  const { user_id, username } = context;
+  const { user: { user_id, username } } = context;
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [type, setType] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [enableSubmit, setEnableSubmit] = useState(true);
   const [product, setProduct] = useState([]);
+  const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState(null);
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:8080/product/${id}`)
       .then((product) => {
         if (product.data.success) {
-          const { name, price, type, quantity, id, shop_id, fileName } = product.data;
+          const { name, price, type, quantity, id, shop_id, fileName, description } = product.data;
           setName(name);
           setPrice(price);
           setQuantity(quantity);
           setType(type);
-          setProduct({ name, price, type, quantity, id, shop_id, fileName });
+          setFileName(fileName);
+          setDescription(description);
+          setProduct({ name, price, type, quantity, id, shop_id, fileName, description });
         } else {
           console.log(product.data.message);
           navigate('/profil');
@@ -42,8 +47,18 @@ const ProfilProduct = () => {
     e.preventDefault();
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = { 'authorization': accessToken };
-    const product_id = product.id;
-    axios.post('http://localhost:8080/update_product', { name, quantity, price, type, product_id }, { headers: headers })
+    const data = new FormData();
+
+    data.append('file', file);
+    data.append('name', name);
+    data.append('quantity', quantity);
+    data.append('price', price);
+    data.append('type', type);
+    data.append('product_id', product.id);
+    data.append('description', description);
+    data.append('boss_id', user_id);
+
+    axios.post('http://localhost:8080/update_product', data, { headers: headers })
       .then((product) => {
         console.log(product);
 
@@ -52,7 +67,7 @@ const ProfilProduct = () => {
             alert(product.data.message);
             navigate('/profil/myshop');
           }
-        } else console.log(product.data.message);
+        } else alert(product.data.message);
       })
       .catch((err) => {
         console.log('error on update', err);
@@ -116,6 +131,16 @@ const ProfilProduct = () => {
     setQuantity(e.target.value);
   }
 
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    if (e.target.files[0].name !== fileName && name && price && type) {
+      setEnableSubmit(false);
+    } else setEnableSubmit(true);
+
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name)
+  }
+
   return (
     <div className='profil-product'>
       <div className='profil-name'>
@@ -143,6 +168,15 @@ const ProfilProduct = () => {
           <div className='myproduct-list-item'>
             <label>Quantity</label>
             <input type='number' min='0' max='999' value={quantity} onChange={(e) => quantityChange(e)} />
+          </div>
+          <div className='myproduct-list-item'>
+            <label>Description</label>
+            <textarea value={description} readOnly />
+          </div>
+          <div className='myproduct-list-item'>
+            <label>Shop image</label>
+            <span>{fileName}</span>
+            <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
           </div>
           <button type='submit' disabled={enableSubmit} id='submit-product-details' >Submit Changes</button>
         </form>

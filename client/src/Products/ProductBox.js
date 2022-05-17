@@ -5,7 +5,7 @@ import heart from '../images/heart.png'
 
 const ProductBox = ({ ...props }) => {
   const navigate = useNavigate();
-  const { name, price, type, quantity, product_id, shop_id, image } = props;
+  const { name, price, quantity, product_id, shop_id, image } = props;
 
   return (
     <div className='productbox'>
@@ -18,7 +18,7 @@ const ProductBox = ({ ...props }) => {
         </li>
         <li className='text-align-end'><img src={heart} alt='heart' height={30} width={30} /></li>
         <li>{price} €</li>
-        <li className='text-align-end'>{type}</li>
+        <li className='text-align-end'>&#11088;&#11088;&#11088;&#11088;&#11088;</li>
       </ul>
     </div>
   );
