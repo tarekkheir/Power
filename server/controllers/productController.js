@@ -119,27 +119,49 @@ const productController = {
   },
 
   update_product: (req, res) => {
-    if (Object.keys(req.body).length > 6) return res.send({ message: 'too much parameters', success: false });
-    const { name, boss_id, quantity, price, product_id, type } = req.body;
-    if (!name || !boss_id || !quantity || !price || !product_id || !type) {
-      return res.status(501).send({ message: 'missing parameters' });
+    console.log(req.body);
+    console.log(req.file);
+    if (Object.keys(req.body).length > 8) return res.send({ message: 'too much parameters', success: false });
+    const { name, boss_id, quantity, price, product_id, type, description } = req.body;
+    if (!name || !boss_id || !quantity || !price || !product_id || !type || !description) {
+      return res.status(200).send({ message: 'missing parameters' });
     }
 
-    Product.update({ quantity: quantity, price: price, name: name, type: type }, { where: { [Op.and]: [{ id: product_id }, { boss_id: boss_id }] } })
+    Product.findAll({ where: { [Op.and]: [{ id: product_id }, { boss_id: boss_id }] } })
       .then((product) => {
-        console.log(product);
-        if (product != 0) {
-          console.log('Product quantity updated');
-          return res.status(200).send({ message: 'Product quantity updated successfully !', success: true });
-        } else {
-          console.log('no update done');
-          return res.status(501).send({ message: 'no update done', success: false });
+        if (Object.keys(product).length) {
+          const { fileName } = product[0].dataValues;
+
+          if (req.file) {
+            const product_image = process.env.DIR_PRODUCTS + fileName;
+
+            fs.unlink(product_image, (err) => {
+              if (err) {
+                console.log('error on delete image: ', err)
+              } else console.log('shop image deleted');
+            });
+          }
+
+          const fileName_update = req.file ? req.file.originalname : fileName;
+
+          Product.update({ description, quantity, price, name, type, fileName: fileName_update },
+            { where: { [Op.and]: [{ id: product_id }, { boss_id: boss_id }] } })
+            .then((product) => {
+              console.log(product);
+              if (product != 0) {
+                console.log('Product quantity updated');
+                return res.status(200).send({ message: 'Product quantity updated successfully !', success: true });
+              } else {
+                console.log('no update done');
+                return res.status(501).send({ message: 'no update done', success: false });
+              }
+            })
+            .catch((err) => {
+              console.log('error on product quantity update');
+              console.log(err);
+              return res.status(501).send({ message: 'error on product quantity update', success: false })
+            })
         }
-      })
-      .catch((err) => {
-        console.log('error on product quantity update');
-        console.log(err);
-        return res.status(501).send({ message: 'error on product quantity update', success: false })
       })
   },
 

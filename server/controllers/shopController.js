@@ -131,32 +131,37 @@ const shopController = {
   },
 
   update_shop_details: (req, res) => {
-    console.log(req.body);
+    console.log('req body: ', req.body);
+    console.log('req file: ', req.file);
     if (Object.keys(req.body).length > 6) return res.send({ message: 'too much parameters', success: false });
-    const { name, boss_id, location, type, open_hours, newFileName } = req.body;
-    if (!name || !boss_id || !location || !type || !open_hours || !newFileName) {
-      return res.status(501).send({ message: 'missing parameters', success: false });
+    const { name, boss_id, location, type, open_hours } = req.body;
+    if (!name || !boss_id || !location || !type || !open_hours) {
+      return res.status(200).send({ message: 'missing parameters', success: false });
     }
 
     Shop.findAll({ where: { boss_id: boss_id } })
       .then((shop) => {
         if (Object.keys(shop).length > 0) {
           const { fileName } = shop[0].dataValues;
-          const shop_image = process.env.DIR_SHOPS + fileName;
 
-          fs.unlink(shop_image, (err) => {
-            if (err) {
-              console.log('error on delete image: ', err)
-              return res.status(200).send({ message: 'error on delete image', success: false });
-            } else console.log('shop image deleted');
-          });
+          if (req.file) {
+            const shop_image = process.env.DIR_SHOPS + fileName;
+
+            fs.unlink(shop_image, (err) => {
+              if (err) {
+                console.log('error on delete image: ', err)
+              } else console.log('shop image deleted');
+            });
+          }
+
+          const fileName_update = req.file ? req.file.originalname : fileName;
 
           Shop.update({
             name: name,
             location: location,
             type: type,
             open_hours: open_hours,
-            fileName: newFileName
+            fileName: fileName_update
           }, { where: { boss_id: boss_id } })
             .then((shop) => {
               if (shop) {
