@@ -33,6 +33,14 @@ const Product = db.sequelize.define('product', {
   fileName: {
     type: Sequelize.DataTypes.STRING,
     allowNull: false
+  },
+  star_rating: {
+    type: Sequelize.DataTypes.INTEGER,
+    allowNull: true
+  },
+  reviews: {
+    type: Sequelize.DataTypes.INTEGER,
+    allowNull: true
   }
 });
 

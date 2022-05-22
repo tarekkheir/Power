@@ -217,6 +217,12 @@ const productController = {
         console.log('error on finding product by id', err);
         return res.status(200).send({ message: 'error on finding product', success: false });
       })
+  },
+
+  add_star_rating: (req, res) => {
+    if (Object.keys(req.body).length > 2) return res.send({ message: 'too much parameters', success: false });
+    const { product_id, star_rating } = req.body;
+    if (!product_id || !star_rating) { return res.status(200).send({ message: 'missing parameters', success: false }) };
   }
 }
 

@@ -70,6 +70,7 @@ router.get('/historic', authUser, historicController.get_historic);
 // Product Comments
 router.post('/add_comment', authUser, productCommentController.add_comment);
 router.post('/delete_comment/:comment_id', authUser, productCommentController.delete_comment);
+router.post('/add_star_rating', productController.add_star_rating);
 router.get('/get_all_comments/:id', authUser, productCommentController.get_all_comments);
 
 
