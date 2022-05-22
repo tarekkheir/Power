@@ -4,6 +4,7 @@ import './Cart.css';
 import profil from '../images/profil.png';
 import axios from 'axios';
 import CartProduct from './CartProduct';
+import { useNavigate } from 'react-router-dom';
 
 
 const Cart = () => {
@@ -12,6 +13,7 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const disabled = (totalPrice === 0);
   const { user: { username, user_id, money } } = context;
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -49,7 +51,7 @@ const Cart = () => {
         .then((buy) => {
           if (buy.data.success) {
             alert(buy.data.message);
-            window.location.reload();
+            navigate('/profil/cart/star_rating');
           } else alert(buy.data.message)
         })
         .catch((err) => {

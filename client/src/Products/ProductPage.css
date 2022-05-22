@@ -1,6 +1,6 @@
 .productpage {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-areas:
         "image description";
     margin: 10rem auto;

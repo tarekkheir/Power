@@ -50,9 +50,27 @@ const ShopList = () => {
             const image = url + fileName;
 
             if (filter !== '' && type === filter) {
-              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} image={image} />
+              return <ShopBox
+                key={id}
+                name={name}
+                open_hours={open_hours}
+                type={type}
+                location={location}
+                shop_id={id}
+                boss_id={boss_id}
+                image={image} />
+
             } else if (filter === '') {
-              return <ShopBox key={id} name={name} open_hours={open_hours} type={type} location={location} shop_id={id} boss_id={boss_id} image={image} />
+              return <ShopBox
+                key={id}
+                name={name}
+                open_hours={open_hours}
+                type={type}
+                location={location}
+                shop_id={id}
+                boss_id={boss_id}
+                image={image} />
+
             } else return null;
           })
         ) : 'shops is null'}

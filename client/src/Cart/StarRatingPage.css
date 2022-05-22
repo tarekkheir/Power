@@ -1,0 +1,12 @@
+.star-rating-page {
+    margin: 5rem auto;
+}
+
+.rating {
+    text-align: center;
+}
+
+#star_icon {
+    color: rgba(220, 220, 25, 0.811);
+    cursor: pointer;
+}

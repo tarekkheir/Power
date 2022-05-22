@@ -18,6 +18,7 @@ import ProfilProduct from '../Profil/ProfilProduct';
 import Cart from '../Cart/Cart';
 import axios from 'axios';
 import ProfilHistoric from '../Profil/ProfilHistoric';
+import StarRatingPage from '../Cart/StarRatingPage';
 
 
 const App = () => {
@@ -91,6 +92,7 @@ const App = () => {
               <Route path='/profil/myshop/add_product' element={<AddProduct />} />
               <Route path='/profil/myshop/product_details/:id' element={<ProfilProduct />} />
               <Route path='/profil/cart' element={<Cart />} />
+              <Route path='/profil/cart/star_rating' element={<StarRatingPage />} />
             </Route>
             <Route path='/login' element={user.isLoggedIn ? <Navigate to='/' /> : <Login logIn={logIn} />} />
             <Route path='/signup' element={user.isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={logIn} />} />
