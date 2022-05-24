@@ -8,6 +8,7 @@ import shop_icon from '../images/shop.png';
 import historical from '../images/historical.png';
 import user from '../images/user.png';
 import cart from '../images/cart.png';
+import heart from '../images/heart.png';
 
 const Profil = () => {
   const context = useContext(AppContext);
@@ -53,6 +54,11 @@ const Profil = () => {
             <img src={historical} height='50' width='50' alt='historic' />
             <h2>Historical</h2>
             <p>Follow my current and past transaction</p>
+          </li>
+          <li className='list-item' onClick={() => navigate('/profil/favoris')}>
+            <img src={heart} height='60' width='60' alt='favoris' />
+            <h2>Favoris</h2>
+            <p>Get your favorites products</p>
           </li>
           <li className='list-item' onClick={() => navigate('/profil/cart')}>
             <img src={cart} height='50' width='50' alt='cart' />

@@ -1,19 +1,18 @@
 .profil-shop {
-    max-width: 90%;
+    max-width: 1300px;
     margin: 5rem auto;
 }
 
 .profil-shop-container {
     margin: 5rem auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
 }
 
 .myshop {
     margin-top: 2rem;
     padding: 0 1rem;
-    width: 90%;
 }
 
 .myshop h2 {
@@ -22,7 +21,7 @@
 
 .myshop-list {
     display: grid;
-    padding: 3rem;
+    padding: 2rem;
     margin: 1rem auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -31,7 +30,7 @@
         "3 4"
         "5 6"
         "submit submit";
-    gap: 2rem;
+    gap: 1.5rem;
     box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.119);
 }
 
@@ -114,7 +113,7 @@
     padding: 3rem;
     margin: 1rem auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 2rem;
     box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.119);
 }
@@ -123,7 +122,16 @@
     box-shadow: rgba(26, 26, 26, 0.08) 0px -1px 4px 0px, rgba(26, 26, 26, 0.12) 0px 4px 8px 0px;
     cursor: pointer;
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 100px 80px;
+}
+
+.myshop-list-item-shop-image {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+}
+
+.myshop-product-list-item-image img {
+    object-fit: cover;
 }
 
 .myshop-product-list-item-description {

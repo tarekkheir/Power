@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import AppContext from '../App/AppContext';
+import AppContext from '../../App/AppContext';
 import './ProfilProduct.css';
-import profil from '../images/profil.png';
+import profil from '../../images/profil.png';
 
 const ProfilProduct = () => {
   const params = useParams();
@@ -18,6 +18,7 @@ const ProfilProduct = () => {
   const [product, setProduct] = useState([]);
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState(null);
+  const [urlFile, setUrlFile] = useState(null);
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
@@ -133,12 +134,22 @@ const ProfilProduct = () => {
 
   const handleFileChange = (e) => {
     e.preventDefault();
-    if (e.target.files[0].name !== fileName && name && price && type) {
+    if (e.target.files[0].name !== product.fileName && name && price && type) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
     setFile(e.target.files[0]);
-    setFileName(e.target.files[0].name)
+    setFileName(e.target.files[0].name);
+    setUrlFile(URL.createObjectURL(e.target.files[0]));
+  }
+
+  const descriptionChange = (e) => {
+    e.preventDefault();
+    if (e.target.value !== product.description && name && price && type && quantity) {
+      setEnableSubmit(false);
+    } else setEnableSubmit(true);
+
+    setDescription(e.target.value);
   }
 
   return (
@@ -171,12 +182,16 @@ const ProfilProduct = () => {
           </div>
           <div className='myproduct-list-item'>
             <label>Description</label>
-            <textarea value={description} readOnly />
+            <textarea value={description} onChange={(e) => descriptionChange(e)} />
           </div>
           <div className='myproduct-list-item'>
             <label>Shop image</label>
-            <span>{fileName}</span>
-            <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+            <div className='myshop-list-item-shop-image'>
+              <span>
+                <img src={urlFile === null ? `http://localhost:8080/products_images/${fileName}` : urlFile} alt='new product' height={'90%'} width={'90%'} />
+              </span>
+              <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+            </div>
           </div>
           <button type='submit' disabled={enableSubmit} id='submit-product-details' >Submit Changes</button>
         </form>

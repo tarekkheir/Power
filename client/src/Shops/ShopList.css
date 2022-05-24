@@ -1,13 +1,13 @@
 .shops-list {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    max-width: 80%;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 1300px;
     gap: 2rem 1rem;
     margin: 10rem auto;
 }
 
 .filter-bar {
-    max-width: 65%;
+    max-width: 1300px;
     margin: 5rem auto;
     display: grid;
     grid-template-columns: 270px 270px 270px;

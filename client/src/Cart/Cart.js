@@ -23,8 +23,8 @@ const Cart = () => {
           console.log('products: ', products.data);
           const datas = [];
           products.data.datas.map((product) => {
-            const { quantity, expire_date, name, price, product_id, shop_id } = product;
-            datas.push({ quantity, name, expire_date, price, product_id, shop_id });
+            const { quantity, expire_date, name, price, product_id, shop_id, fileName } = product;
+            datas.push({ quantity, name, expire_date, price, product_id, shop_id, fileName });
             return 1;
           })
           setProducts(datas);
@@ -51,7 +51,7 @@ const Cart = () => {
         .then((buy) => {
           if (buy.data.success) {
             alert(buy.data.message);
-            navigate('/profil/cart/star_rating');
+            navigate('/profil/cart/star_rating', { state: { products } });
           } else alert(buy.data.message)
         })
         .catch((err) => {

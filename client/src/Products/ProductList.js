@@ -15,9 +15,10 @@ const ProductList = ({ shop_id }) => {
         if (res.data.success) {
           const datas = [];
           res.data.datas.map((product) => {
-            const { name, type, price, quantity, id, fileName } = product;
-            console.log('image: ', fileName);
-            datas.push({ name, price, quantity, type, id, fileName });
+            const { name, type, price, quantity, id, fileName, reviews, star_rating } = product;
+            console.log(reviews);
+            console.log(star_rating);
+            datas.push({ name, price, quantity, type, id, fileName, reviews, star_rating });
             return 1;
           });
           setProducts(datas);
@@ -68,13 +69,36 @@ const ProductList = ({ shop_id }) => {
       <div className='products-list'>
         {products.length ? (
           products.map((product) => {
-            const { name, type, quantity, price, id, fileName } = product;
+            const { name, type, quantity, price, id, fileName, reviews, star_rating } = product;
+            console.log(product);
             const image = url + fileName;
+            const rating = parseFloat((Number(star_rating) / Number(reviews))).toFixed(2);
+            const ratingPourcentage = (rating / 5) * 100;
 
             if (filterType !== '' && filterType === type && Number(price) <= priceRange) {
-              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} image={image} />
+              return <ProductBox
+                key={id}
+                name={name}
+                price={price}
+                type={type}
+                quantity={quantity}
+                shop_id={shop_id}
+                product_id={id}
+                image={image}
+                ratingPourcentage={ratingPourcentage}
+                rating={rating} />
             } else if (filterType === '' && Number(price) <= priceRange) {
-              return <ProductBox key={id} name={name} price={price} type={type} quantity={quantity} shop_id={shop_id} product_id={id} image={image} />
+              return <ProductBox
+                key={id}
+                name={name}
+                price={price}
+                type={type}
+                quantity={quantity}
+                shop_id={shop_id}
+                product_id={id}
+                image={image}
+                ratingPourcentage={ratingPourcentage}
+                rating={rating} />
             } else return null;
           })
         ) : <h2>No products available...</h2>}

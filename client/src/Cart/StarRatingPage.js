@@ -1,92 +1,63 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ProductRating from './ProductRating';
 import './StarRatingPage.css';
 import axios from 'axios';
 
 
 const StarRatingPage = () => {
-  const stars = [1, 2, 3, 4, 5];
-  const [rating, setRating] = useState(0);
-  const [hovered, setHovered] = useState(0);
-  const [comment, setComment] = useState('');
-  const selectedIcon = "★";
-  const deselectedIcon = "☆";
+  const location = useLocation();
+  const { state: { products } } = location;
+  const refs = useRef([]);
+  const [productsData, setProductsData] = useState([]);
+  const navigate = useNavigate();
 
-  const changeRating = (newRating) => {
-    setRating(newRating);
+
+  const postRating = () => {
+    const accessToken = sessionStorage.getItem('accessToken');
+    const headers = { 'authorization': accessToken };
+
+    axios.post('http://localhost:8080/product_rating', { productsData }, { headers })
+      .then((res) => {
+        if (res.data.success) {
+          alert(res.data.message)
+          navigate('/');
+        } else alert(res.data.message)
+      })
+      .catch((err) => {
+        console.log('error on axios post rating: ', err);
+      })
   }
 
-  const hoverRating = (rating) => {
-    setHovered(rating);
-  }
+  const getState = () => {
+    const data = [];
 
-  const leaveComment = (e) => {
-    if (window.confirm('Leave this comment ?')) {
-      e.preventDefault();
-      // const accessToken = sessionStorage.getItem('accessToken');
-      // const headers = { 'authorization': accessToken };
+    refs.current.map((ref) => {
+      const rating = ref.getChildRating();
+      const name = ref.getName();
+      const product_id = ref.getProductId();
 
-      // axios.post('http://localhost:8080/add_comment',
-      //   {
-      //     username: username,
-      //     product_id: id,
-      //     shop_id: product.shop_id,
-      //     comment: comment
-      //   }, { headers: headers })
-      //   .then((comment) => {
-      //     if (comment.data.success) {
-      //       alert(comment.data.message);
-      //       window.location.reload();
-      //     } else console.log(comment.data.message);
-      //   })
-      //   .catch((err) => {
-      //     console.log('error on axios post comment: ', err);
-      //   })
-    }
-  }
+      data.push({ rating, name, product_id });
+      return 1;
+    })
 
-  const handleCommentChange = (e) => {
-    e.preventDefault();
-    setComment(e.target.value);
+    setProductsData(data);
+    postRating();
   }
 
 
   return (
     <div className='star-rating-page'>
-      <div className="rating" style={{ fontSize: '5em', color: "#38d39f" }}>
+      {products.map((product, index) => {
+        const { name, fileName, product_id } = product;
 
-        {stars.map(star => {
-          return (
-            <span
-              id='star_icon'
-              onClick={() => changeRating(star)}
-              onMouseEnter={() => hoverRating(star)}
-              onMouseLeave={() => hoverRating(0)}
-            >
-              {rating < star ?
-                hovered < star ? deselectedIcon : selectedIcon
-                :
-                selectedIcon
-              }
-            </span>
-          );
-        })}
-
-      </div>
-      <div>
-        <form className='shop-comments' onSubmit={(e) => leaveComment(e)}>
-          <label id='leave-comment'>Leave a comment</label>
-          <textarea
-            placeholder='How did you find this product ? ...'
-            name='comment'
-            id='comment-area'
-            value={comment}
-            onChange={(e) => handleCommentChange(e)} />
-
-          <div id='comment-button-container'>
-            <button id='submit-comment-button' type='submit'>Submit</button>
-          </div>
-        </form>
-      </div>
+        return <ProductRating
+          ref={(element) => { refs.current[index] = element }}
+          name={name}
+          fileName={fileName}
+          product_id={product_id} />
+      })}
+      <button onClick={getState}>get state</button>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import AppContext from '../App/AppContext';
+import AppContext from '../../App/AppContext';
 import ProfilHistBox from './ProfilHistBox';
-import profil from '../images/profil.png';
+import profil from '../../images/profil.png';
 import './ProfilHistoric.css';
 
 const ProfilHistoric = () => {

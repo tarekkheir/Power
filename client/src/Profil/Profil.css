@@ -5,7 +5,7 @@ center {
 }
 
 .profil {
-    max-width: 70%;
+    max-width: 1300px;
     margin: 5rem auto;
 }
 
@@ -35,8 +35,8 @@ center {
 .list-item {
     list-style: none;
     margin: auto;
-    width: 400px;
-    height: 200px;
+    width: 340px;
+    height: 170px;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;

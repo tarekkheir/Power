@@ -1,5 +1,8 @@
 .star-rating-page {
     margin: 5rem auto;
+    max-width: 1000px;
+    display: grid;
+    gap: 1rem;
 }
 
 .rating {
@@ -9,4 +12,21 @@
 #star_icon {
     color: rgba(220, 220, 25, 0.811);
     cursor: pointer;
+}
+
+.rating-item {
+    display: grid;
+    grid-template-columns: 250px 400px;
+    padding: 0.5rem;
+}
+
+.rating-product-image {
+    max-height: 100px;
+    max-width: 100px;
+    border-radius: 10px;
+}
+
+.cart-product-name {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }

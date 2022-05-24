@@ -11,14 +11,15 @@ import Shop from '../Shops/Shop';
 import Product from '../Products/ProductPage';
 import Profil from '../Profil/Profil';
 import AddShop from '../Shops/AddShop';
-import ProfilDetails from '../Profil/ProfilDetails';
-import ProfilShop from '../Profil/ProfilShop';
+import ProfilDetails from '../Profil/Details/ProfilDetails';
+import ProfilShop from '../Profil/Shop/ProfilShop';
 import AddProduct from '../Products/AddProduct';
-import ProfilProduct from '../Profil/ProfilProduct';
+import ProfilProduct from '../Profil/Products/ProfilProduct';
 import Cart from '../Cart/Cart';
 import axios from 'axios';
-import ProfilHistoric from '../Profil/ProfilHistoric';
+import ProfilHistoric from '../Profil/Historic/ProfilHistoric';
 import StarRatingPage from '../Cart/StarRatingPage';
+import ProfilFavoris from '../Profil/Favoris/ProfilFavoris';
 
 
 const App = () => {
@@ -93,6 +94,7 @@ const App = () => {
               <Route path='/profil/myshop/product_details/:id' element={<ProfilProduct />} />
               <Route path='/profil/cart' element={<Cart />} />
               <Route path='/profil/cart/star_rating' element={<StarRatingPage />} />
+              <Route path='/profil/favoris' element={<ProfilFavoris />} />
             </Route>
             <Route path='/login' element={user.isLoggedIn ? <Navigate to='/' /> : <Login logIn={logIn} />} />
             <Route path='/signup' element={user.isLoggedIn ? <Navigate to='/' /> : <SignUp logIn={logIn} />} />

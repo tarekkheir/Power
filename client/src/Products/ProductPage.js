@@ -75,7 +75,8 @@ const Product = () => {
       shop_id: product.shop_id,
       user_id: user_id,
       expire_date: targetDate,
-      price: product.price
+      price: product.price,
+      fileName: product.fileName
     })
       .then((cart) => {
         if (cart.data.success) {
@@ -155,7 +156,13 @@ const Product = () => {
       </div >
       <form className='shop-comments' onSubmit={(e) => leaveComment(e)}>
         <label id='leave-comment'>Leave a comment</label>
-        <textarea placeholder='How did you find this product ? ...' name='comment' id='comment-area' value={comment} onChange={(e) => handleCommentChange(e)} />
+        <textarea
+          placeholder='How did you find this product ? ...'
+          name='comment'
+          id='comment-area'
+          value={comment}
+          onChange={(e) => handleCommentChange(e)} />
+
         <div id='comment-button-container'>
           <button id='submit-comment-button' type='submit'>Submit</button>
         </div>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import AppContext from '../App/AppContext';
+import AppContext from '../../App/AppContext';
 import './ProfilShop.css';
-import profil from '../images/profil.png';
+import profil from '../../images/profil.png';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilShop = () => {
@@ -16,6 +16,7 @@ const ProfilShop = () => {
   const [products, setProducts] = useState([]);
   const [fileName, setFileName] = useState('');
   const [file, setFile] = useState(null);
+  const [urlFile, setUrlFile] = useState(null);
   const context = useContext(AppContext);
   const { user: { user_id, username } } = context;
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const ProfilShop = () => {
           const hours = open_hours.split(' - ');
           const open = hours[0];
           const close = hours[1];
-          setShop({ name, location, open, close, id, type });
+          setShop({ name, location, open, close, id, type, fileName });
           setName(name);
           setType(type);
           setLocation(location);
@@ -157,12 +158,13 @@ const ProfilShop = () => {
 
   const handleFileChange = (e) => {
     e.preventDefault();
-    if (e.target.files[0].name !== fileName && name && location && type && openHour && closeHour) {
+    if (e.target.files[0].name !== shop.fileName && name && location && type && openHour && closeHour) {
       setEnableSubmit(false);
     } else setEnableSubmit(true);
 
     setFile(e.target.files[0]);
-    setFileName(e.target.files[0].name)
+    setFileName(e.target.files[0].name);
+    setUrlFile(URL.createObjectURL(e.target.files[0]));
   }
 
   return (
@@ -202,8 +204,16 @@ const ProfilShop = () => {
               </div>
               <div className='myshop-list-item'>
                 <label>Shop image</label>
-                <span>{fileName}</span>
-                <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+                <div className='myshop-list-item-shop-image'>
+                  <span>
+                    <img
+                      src={urlFile === null ? `http://localhost:8080/shops_images/${fileName}` : urlFile}
+                      alt='new shop img'
+                      height={'90%'}
+                      width={'90%'} />
+                  </span>
+                  <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+                </div>
               </div>
               <button type='submit' disabled={enableSubmit} id='submit-shop-details' >Submit Changes</button>
             </form>
@@ -222,10 +232,16 @@ const ProfilShop = () => {
               <button key={12345} id='myshop-products-button' onClick={() => navigate('/profil/myshop/add_product')}>+</button>
               {products.map((product) => {
                 return <li key={product.id} className='myshop-products-list-item' onClick={() => navigate(`/profil/myshop/product_details/${product.id}`)}>
-                  <div className='myshop-product-list-item-image'></div>
+                  <div className='myshop-product-list-item-image'>
+                    <img
+                      src={`http://localhost:8080/products_images/${product.fileName}`}
+                      alt='product'
+                      width={'100%'}
+                      height={'100%'} />
+                  </div>
                   <div className='myshop-product-list-item-description'>
                     <h4>{product.name} ({product.quantity})</h4>
-                    <span>Price {product.price} €</span>
+                    <span>{product.price} €</span>
                   </div>
                 </li>
               })}

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppContext from '../App/AppContext';
-import profil from '../images/profil.png';
+import AppContext from '../../App/AppContext';
+import profil from '../../images/profil.png';
 import './ProfilDetails.css';
 
 const ProfilDetails = () => {

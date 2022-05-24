@@ -11,6 +11,7 @@ const AddProduct = () => {
   const [quantity, setQuantity] = useState(0);
   const [enableSubmit, setEnableSubmit] = useState(true);
   const [file, setFile] = useState();
+  const [urlFile, setUrlFile] = useState(null);
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
   const context = useContext(AppContext);
@@ -91,6 +92,7 @@ const AddProduct = () => {
     } else setEnableSubmit(true);
 
     setFile(e.target.files[0]);
+    setUrlFile(URL.createObjectURL(e.target.files[0]))
   }
 
   const handleDescriptionChange = (e) => {
@@ -121,7 +123,12 @@ const AddProduct = () => {
           </div>
           <div className='upload-picture text-align-center'>
             <label className='addshop-details-item-label text-align-center'>Product Image</label>
-            <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+            <div className='upload-picture-image'>
+              <span>
+                <img src={urlFile} alt='no product' height={'90%'} width={'90%'} />
+              </span>
+              <input className='text-align-center' type='file' onChange={(e) => handleFileChange(e)} />
+            </div>
           </div>
         </div>
         <div className='addshop-details-item-values'>
