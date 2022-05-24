@@ -7,9 +7,9 @@ const { Historic } = require("../models/historic.model");
 const sessionController = {
   add_to_cart: (req, res) => {
     console.log(req.body);
-    if (Object.keys(req.body).length > 7) return res.send({ message: 'too much parameters', success: false });
-    const { quantity, product_id, user_id, name, shop_id, expire_date, price } = req.body;
-    if (!name || !quantity || !product_id || !user_id || !shop_id || !expire_date || !price) {
+    if (Object.keys(req.body).length > 8) return res.send({ message: 'too much parameters', success: false });
+    const { quantity, product_id, user_id, name, shop_id, expire_date, price, fileName } = req.body;
+    if (!name || !quantity || !product_id || !user_id || !shop_id || !expire_date || !price || !fileName) {
       return res.status(501).send({ message: 'missing parameters', success: false });
     }
 
@@ -55,7 +55,8 @@ const sessionController = {
                     name: name,
                     expire_date: Number(expire_date),
                     price: price,
-                    shop_id: shop_id
+                    shop_id: shop_id,
+                    fileName: fileName
                   })
                     .then((cart) => {
 
@@ -98,8 +99,8 @@ const sessionController = {
         if (Object.keys(products).length) {
           const datas = [];
           products.map((product) => {
-            const { name, expire_date, quantity, price, product_id, shop_id } = product.dataValues;
-            datas.push({ name, quantity, expire_date, price, product_id, shop_id });
+            const { name, expire_date, quantity, price, product_id, shop_id, fileName } = product.dataValues;
+            datas.push({ name, quantity, expire_date, price, product_id, shop_id, fileName });
           })
           return res.status(200).send({ datas, success: true });
         } else return res.status(200).send({ message: 'You have no products in your Cart', success: false });

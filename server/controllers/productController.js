@@ -185,9 +185,9 @@ const productController = {
               else {
                 const products = [];
                 product.map((p) => {
-                  const { name, price, type, quantity, id, description } = p.dataValues;
+                  const { name, price, type, quantity, id, description, reviews, star_rating } = p.dataValues;
 
-                  products.push({ name, price, type, quantity, id, description, product_image });
+                  products.push({ name, price, type, quantity, id, description, product_image, reviews, star_rating });
                 });
                 return res.send({ products, success: true, shop_name });
               }
@@ -209,9 +209,9 @@ const productController = {
     Product.findAll({ where: { id: id } })
       .then((product) => {
         if (!product) return res.status(200).send({ message: 'no product found for this shop', success: false });
-        const { name, price, type, quantity, id, shop_id, description, fileName } = product[0].dataValues;
+        const { name, price, type, quantity, id, shop_id, description, fileName, reviews, star_rating } = product[0].dataValues;
 
-        return res.status(200).send({ shop_id, name, price, type, quantity, id, description, fileName, success: true });
+        return res.status(200).send({ shop_id, name, price, type, quantity, id, description, fileName, reviews, star_rating, success: true });
       })
       .catch((err) => {
         console.log('error on finding product by id', err);
@@ -220,9 +220,37 @@ const productController = {
   },
 
   add_star_rating: (req, res) => {
+    console.log(req.body);
     if (Object.keys(req.body).length > 2) return res.send({ message: 'too much parameters', success: false });
-    const { product_id, star_rating } = req.body;
-    if (!product_id || !star_rating) { return res.status(200).send({ message: 'missing parameters', success: false }) };
+    const { productsData } = req.body;
+    if (!productsData.length) { return res.status(200).send({ message: 'missing parameters', success: false }) };
+
+    productsData.map((p) => {
+      const { product_id, rating } = p;
+
+      Product.findAll({ where: { id: product_id } })
+        .then((product) => {
+          if (Object.keys(product).length) {
+            const { star_rating, reviews } = product[0].dataValues;
+            const new_rating = star_rating + rating;
+            const new_reviews = reviews + 1;
+
+            Product.update({ star_rating: new_rating, reviews: new_reviews }, { where: { id: product_id } })
+              .then((result) => {
+                if (result) return res.status(200).send({ message: 'Rating added successfully', success: true });
+                else return res.status(200).send({ message: 'Rating failed...', success: false });
+              })
+              .catch((err) => {
+                console.log('Error on update product: ', err);
+                return res.status(200).send({ message: 'Error on update product', success: false });
+              })
+          }
+        })
+        .catch((err) => {
+          console.log('Error on finding product: ', err);
+          return res.status(200).send({ message: 'Error on finding Product', success: false });
+        })
+    })
   }
 }
 

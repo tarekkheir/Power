@@ -29,6 +29,10 @@ const Cart = db.sequelize.define('cart', {
   shop_id: {
     type: Sequelize.DataTypes.INTEGER,
     allowNull: false
+  },
+  fileName: {
+    type: Sequelize.DataTypes.STRING,
+    allowNull: false
   }
 });
 

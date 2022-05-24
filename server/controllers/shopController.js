@@ -222,8 +222,8 @@ const shopController = {
           .then((products) => {
             if (!Object.keys(products).length) return res.status(200).send({ message: 'no product available for this shop', success: false });
             products.map((product) => {
-              const { name, price, type, quantity, id, boss_id, fileName } = product.dataValues;
-              datas.push({ name, price, type, quantity, id, boss_id, fileName });
+              const { name, price, type, quantity, id, boss_id, fileName, reviews, star_rating } = product.dataValues;
+              datas.push({ name, price, type, quantity, id, boss_id, fileName, reviews, star_rating });
             })
             return res.status(200).send({ datas, success: true });
           })
