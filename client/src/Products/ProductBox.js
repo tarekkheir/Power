@@ -7,16 +7,15 @@ import axios from 'axios';
 
 const ProductBox = ({ ...props }) => {
   const navigate = useNavigate();
-  const { name, price, quantity, product_id, shop_id, image, ratingPourcentage, rating } = props;
+  const { name, price, quantity, product_id, shop_id, image, ratingPourcentage, rating, fav } = props;
   const ref = useRef();
   const [liked, setLiked] = useState(false);
 
-  console.log(rating);
 
   useEffect(() => {
-    console.log(ref.current.style);
+    setLiked(fav);
     ref.current.style.width = `${ratingPourcentage}%`;
-  })
+  }, [fav, ratingPourcentage])
 
   const handleLike = (e) => {
     if (window.confirm('Add this product to your favoris ?')) {
@@ -28,9 +27,9 @@ const ProductBox = ({ ...props }) => {
       axios.post('http://localhost:8080/add_favoris', { product_id, shop_id }, { headers })
         .then((res) => {
           if (res.data.success) {
-            alert(res.data.message);
+            console.log(res.data.message);
             setLiked(!liked);
-          } else alert(res.data.message);
+          } else console.log(res.data.message);
         })
         .catch((err) => {
           console.log('error on adding product to favoris: ', err);

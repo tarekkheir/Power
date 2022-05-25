@@ -2,11 +2,17 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 180px 1fr;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.238);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.238);
     height: 250px;
     width: 400px;
     cursor: pointer;
     margin: auto;
+    transition: 0.3s;
+}
+
+.shopbox:hover {
+    transform: translate(0, -5px);
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.238);
 }
 
 .image {

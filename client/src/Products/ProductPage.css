@@ -3,7 +3,7 @@
     grid-template-columns: 1fr;
     grid-template-areas:
         "image description";
-    margin: 10rem auto;
+    margin: 10rem auto 5rem;
     max-width: 1300px;
     gap: 3rem;
     padding-bottom: 5rem;
@@ -50,6 +50,7 @@
     height: 20px;
     width: 20px;
     margin: auto;
+    cursor: pointer;
 }
 
 .cart-button {

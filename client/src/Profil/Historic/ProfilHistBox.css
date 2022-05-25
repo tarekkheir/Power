@@ -31,7 +31,7 @@ ul {
 
 .date {
     display: grid;
-    grid-template-columns: 1fr 80px;
+    grid-template-columns: 1fr 1fr;
     color: #92a8d1;
 }
 
