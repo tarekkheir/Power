@@ -82,6 +82,7 @@ router.get('/get_all_comments/:id', authUser, productCommentController.get_all_c
 
 // Favoris
 router.post('/add_favoris', authUser, favorisController.add_favoris);
+router.get('/get_favorites', authUser, favorisController.get_favoris);
 
 
 
